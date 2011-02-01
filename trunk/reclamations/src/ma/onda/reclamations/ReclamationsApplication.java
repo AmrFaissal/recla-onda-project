@@ -22,6 +22,7 @@ public class ReclamationsApplication extends Application {
 	private VerticalLayout l2 = new VerticalLayout();
 	private VerticalLayout l3 = new VerticalLayout();
 	private static HorizontalLayout hlayout = new HorizontalLayout();
+	private static HorizontalLayout hlayout1 = new HorizontalLayout();
 	private static final ThemeResource icon1 = new ThemeResource("icons/actions/ledyellow.png");
 	private static final ThemeResource icon2 = new ThemeResource("icons/actions/ledgreen.png");
 	private static final ThemeResource icon3 = new ThemeResource("icons/actions/ledred.png");
@@ -79,13 +80,20 @@ public class ReclamationsApplication extends Application {
 		l2.setMargin(true);
 		l2.setSpacing(true);
 		BeanItem<GPassager> item1 = new BeanItem<GPassager>(gpassager);
-		form2.setCaption("Vous êtes");
+		form2.setCaption("Quelques informations");
 		form2.setFormFieldFactory(new GPassagerFieldFactory());
 		form2.setItemDataSource(item1);
 		form2.setVisibleItemProperties(Arrays.asList(new String[]{
-				"passager","usager", "attendant", "accompagnateur", "date", "nVol", "provenance", "destination"
+				"typeReclamateur" , "date", "nVol", "provenance", "destination"
 		}));
 		l2.addComponent(form2);
+		Button website1 = new Button("www.onda.ma");
+		website1.setStyleName(Button.STYLE_LINK);
+		hlayout1.setSpacing(true);
+		hlayout1.addComponent(new Label("Pour tout complément d'informations, veuillez visiter notre site web: "));
+		hlayout1.addComponent(website1);
+		l2.addComponent(new Label(""));
+		l2.addComponent(hlayout1);
 		
 		
 		l3.setMargin(true);
@@ -165,7 +173,7 @@ public class ReclamationsApplication extends Application {
 				if (!form1.getField("email").getValue().equals(""))
 				{ 
 					//adding the passenger
-					//ServerProvider.get__serverPrx().addPassager(id, form1.getField("gender").getValue().toString(), form1.getField("nom").getValue().toString(), form1.getField("email").getValue().toString(), form1.getField("adresse").getValue().toString(), form1.getField("codePostale").getValue().toString(), form1.getField("phone").getValue().toString(), form1.getField("gender").getValue().toString(), numVol, prov, dest, nationalite)
+					new ServerProvider().get__serverPrx().addPassager(id, form1.getField("gender").getValue().toString(), form1.getField("nom").getValue().toString(), form1.getField("email").getValue().toString(), form1.getField("adresse").getValue().toString(), form1.getField("codePostale").getValue().toString(), form1.getField("phone").getValue().toString(), form2.getField("typeReclamateur").getValue().toString(), form2.getField("nVol").getValue().toString(), form2.getField("provenance").getValue().toString(), form2.getField("destination").getValue().toString(), form1.getField("nationalite").getValue().toString());
 					
 				}
 				

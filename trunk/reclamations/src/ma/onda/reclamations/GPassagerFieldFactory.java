@@ -13,6 +13,7 @@ import com.vaadin.ui.TextField;
 @SuppressWarnings("serial")
 public class GPassagerFieldFactory extends DefaultFieldFactory {
 	
+	ComboBox passager = new ComboBox("Vous êtes?");
 	ComboBox countries = new ComboBox("Provenance");
 	ComboBox _countries = new ComboBox("Destination");
 	final String[] locales = Locale.getISOCountries();
@@ -29,6 +30,12 @@ public class GPassagerFieldFactory extends DefaultFieldFactory {
 		 {
 			 _countries.addItem(locales[i]);
 		 }
+		 
+		 //felling out passenger type
+		 passager.addItem("Passager");
+		 passager.addItem("Usager");
+		 passager.addItem("Attendant");
+		 passager.addItem("Accompagnateur");
 		
 	}
 	
@@ -46,12 +53,19 @@ public class GPassagerFieldFactory extends DefaultFieldFactory {
 			return _countries;
 		}
 		
+		if ("typeReclamateur".equals(propertyId))
+		{
+			return passager;
+		}
+		
 		Field f = super.createField(item, propertyId, uiContext);
 		 
 		if ("date".equals(propertyId))
 		 {
 			 DateField pdate = (DateField)f;
 			 pdate.setRequired(true);
+			 pdate.setLocale(new Locale("fr","FR"));
+			 pdate.setDateFormat("YYYY-MM-DD");
 			 pdate.setWidth("14em");
 		 }
 		 else if ("nVol".equals(propertyId))
