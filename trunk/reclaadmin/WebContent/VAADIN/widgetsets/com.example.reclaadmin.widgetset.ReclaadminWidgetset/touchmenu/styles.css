@@ -1,0 +1,47 @@
+.v-touchmenu{
+	position: relative;
+}
+
+.v-toucharea{
+	overflow: hidden;
+	float: left;
+}
+
+.v-left{
+	float: left;
+	border: none;
+	background: url('img/left-arrow.png') no-repeat transparent 50% 50%;
+}
+
+.v-right{
+	float: left;
+	border: none;
+	background: url('img/right-arrow.png') no-repeat transparent 50% 50%;
+}
+
+.v-touchmenuitem{
+	border: none;
+	background-image: url('img/TouchButton-100x100.png');
+	background-repeat: no-repeat;
+	background-color: transparent;
+}
+
+.v-touchmenuitem-small{
+	font-size: 10px;
+	border: none;
+	background-image: url('img/TouchButton-50x50.png');
+	background-repeat: no-repeat;
+	background-color: transparent;
+}
+
+.v-touchmenuitem-big{
+	font-size: 20px;
+	border: none;
+	background-image: url('img/TouchButton-150x150.png');
+	background-repeat: no-repeat;
+	background-color: transparent;
+}
+
+button::-moz-focus-inner { 
+	border: 0;
+}
