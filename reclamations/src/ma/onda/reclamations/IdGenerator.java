@@ -1,4 +1,4 @@
-package server;
+package ma.onda.reclamations;
 
 public class IdGenerator {
 	
