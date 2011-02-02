@@ -47,6 +47,9 @@ public class AdminView extends VerticalLayout {
 		MenuBar.MenuItem pv = mainmenu.addItem("Générer PV", generatePV);
 		pv.setIcon(new ThemeResource("icons/actions/filenew.png"));
 		
+		MenuBar.MenuItem reclamation = mainmenu.addItem("Tableau de Réclamations", getReclamations);
+		reclamation.setIcon(new ThemeResource("icons/actions/toggle_log.png"));
+		
 		MenuBar.MenuItem analyse = mainmenu.addItem("Tableau d'analyse", getAnalyse);
 		analyse.setIcon(new ThemeResource("icons/actions/toggle_log.png"));
 		
@@ -80,7 +83,6 @@ public class AdminView extends VerticalLayout {
 		@Override
 		public void menuSelected(MenuItem selectedItem) {
 			__app.getViewManager().switchScreen(LoginScreen.class.getName(), new LoginScreen(__app));
-			
 		}
 	};
 
@@ -112,6 +114,15 @@ public class AdminView extends VerticalLayout {
 		public void menuSelected(MenuItem selectedItem) {
 			centrale.setVisible(true);
 			switchView(centrale, new TableauAnalyse(centrale));
+		}	
+	};
+	
+	private Command getReclamations = new Command(){
+
+		@Override
+		public void menuSelected(MenuItem selectedItem) {
+			centrale.setVisible(true);
+			switchView(centrale, new TableauReclamation(centrale));
 		}	
 	};
 	
