@@ -22,6 +22,7 @@ public class PassagerFieldFactory  extends DefaultFieldFactory {
 	 */
 	public PassagerFieldFactory()
 	{
+		gender.setInputPrompt("Vous êtes?");
 		gender.setWidth("13em");
 		gender.addItem("Mme");
 		gender.addItem("Mlle");
@@ -47,6 +48,7 @@ public class PassagerFieldFactory  extends DefaultFieldFactory {
 		 
 		 if ("nationalite".equals(propertyId))
 		 {
+			 nationalite.setInputPrompt("Nationalité");
 			 return nationalite;
 		 }
 		 
@@ -56,6 +58,7 @@ public class PassagerFieldFactory  extends DefaultFieldFactory {
 		 {
 			 TextField txt = (TextField) f;
 			 txt.setCaption("Téléphone");
+			 txt.setInputPrompt("(+111) xxx-xxx-xxx");
 		 }
 		 
 		 return f;

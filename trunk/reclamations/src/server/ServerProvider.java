@@ -3,8 +3,9 @@ package server;
 
 import DQSP.server.DQSPServerPrx;
 import DQSP.server.DQSPServerPrxHelper;
+import Ice.Application;
 import Ice.Communicator;
-import Ice.Util;
+
 
 public class ServerProvider {
 	
@@ -14,20 +15,18 @@ public class ServerProvider {
 	private Ice.ObjectPrx obj;
 
 	
-	public DQSPServerPrx get__serverPrx() 
+	
+	public ServerProvider() 
 	{
-		try
-		{
-			ic = Util.initialize();
-			obj = ic.stringToProxy("DQSPServer:tcp -p 10000 -h 192.168.1.1");
+			ic = Ice.Application.communicator();
+			obj = ic.stringToProxy("DQSPServer:tcp -h 192.168.1.1 -p 10001");
 			__serverPrx = DQSPServerPrxHelper.uncheckedCast(obj);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		return __serverPrx;
+	}
+	  
+	
+	public DQSPServerPrx get__serverPrx() 
+	{	
+		return this.__serverPrx;
 	}
 
 }

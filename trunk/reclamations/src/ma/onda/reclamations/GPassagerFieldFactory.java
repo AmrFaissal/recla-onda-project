@@ -32,6 +32,7 @@ public class GPassagerFieldFactory extends DefaultFieldFactory {
 		 }
 		 
 		 //felling out passenger type
+		 passager.setInputPrompt("Vous êtes?");
 		 passager.addItem("Passager");
 		 passager.addItem("Usager");
 		 passager.addItem("Attendant");
@@ -65,19 +66,21 @@ public class GPassagerFieldFactory extends DefaultFieldFactory {
 			 DateField pdate = (DateField)f;
 			 pdate.setRequired(true);
 			 pdate.setLocale(new Locale("fr","FR"));
-			 pdate.setDateFormat("YYYY-MM-DD");
+			 pdate.setDateFormat("yyyy-MM-dd");
 			 pdate.setWidth("14em");
 		 }
 		 else if ("nVol".equals(propertyId))
 		 {
 			 TextField tf = (TextField)f;
 			 tf.setCaption("N° Vol");
+			 tf.setInputPrompt("Numéro de vol");
 			 tf.setRequired(true);
 			 tf.setWidth("14em");
 		 }
 		 else if ("provenance".equals(propertyId))
 		 {
-			 ComboBox cb = (ComboBox)f;	 cb.setRequired(true);
+			 ComboBox cb = (ComboBox)f;	 
+			 cb.setRequired(true);
 			 cb.setFilteringMode(ComboBox.FILTERINGMODE_STARTSWITH);
 		 }
 
