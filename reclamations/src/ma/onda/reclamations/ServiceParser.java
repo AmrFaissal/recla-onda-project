@@ -21,6 +21,14 @@ public class ServiceParser {
 		if (zone.equals("Comptoirs d'enregistrement")){
 			service = "Compagnies Aériennes";
 		}
+		
+		if (zone.equals("Comptoirs d'informations")){
+			service = "Service HT/MT";
+		}
+		
+		if (zone.equals("Blocs sanitaires")){
+			service = "ONDA";
+		}
 	
 		return service;
 	}

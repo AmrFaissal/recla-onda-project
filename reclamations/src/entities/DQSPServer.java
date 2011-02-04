@@ -11,7 +11,7 @@ public interface DQSPServer {
 
 	public void addReclamation(int idPassager, java.sql.Date date, String nomAeroport,
 			String terminale, String nomService, String remarque,
-			String descriptif);
+			String descriptif, String theme);
 	
 	public java.util.List<String> listOfAirports();
 
