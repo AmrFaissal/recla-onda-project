@@ -70,11 +70,10 @@ public class DQSPServerI implements DQSPServer {
 	}
 
 
-
 	@Override
 	public void addReclamation(int idPassager, Date date, String nomAeroport,
 			String terminale, String nomService, String remarque,
-			String descriptif) {
+			String descriptif, String theme) {
 		
 		// getting a connection
 		Connection c = DBConnexion.getConnection();
@@ -82,7 +81,7 @@ public class DQSPServerI implements DQSPServer {
 		try {
 			// preparing the statement
 			PreparedStatement ps = c
-					.prepareStatement("INSERT INTO reclamation VALUES (null,?,?,?,?,?,?,?)");
+					.prepareStatement("INSERT INTO reclamation VALUES (null,?,?,?,?,?,?,?,?)");
 			ps.setInt(1, idPassager);
 			ps.setDate(2, date);
 			ps.setString(3, nomAeroport);
@@ -90,6 +89,7 @@ public class DQSPServerI implements DQSPServer {
 			ps.setString(5, nomService);
 			ps.setString(6, remarque);
 			ps.setString(7, descriptif);
+			ps.setString(8, theme);
 
 			ps.executeUpdate();
 
