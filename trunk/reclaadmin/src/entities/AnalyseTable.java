@@ -1,65 +1,68 @@
 package entities;
 
-import java.io.Serializable;
 
-
-
-public class AnalyseTable implements Serializable {
+public class AnalyseTable {
 	
-	private static final long serialVersionUID = 1L;
-
-	private int num;
-
-	private String action;
-
-	private String probleme;
-
+	private String service;
 	private String theme;
+	private int nbreRecla;
+	private String descriptif;
+	private String action;
 	
-
-	/*
-	 * Constructor
-	 * @param null
-	 */
-    public AnalyseTable() 
-    {
-    	
-    }
-
-    
-    /*
-     * getters & setters
-     */
-	public int getNum() {
-		return this.num;
+	
+	public AnalyseTable() {
+		
 	}
 
-	public void setNum(int num) {
-		this.num = num;
+
+	public String getService() {
+		return service;
 	}
 
-	public String getAction() {
-		return this.action;
+
+	public void setService(String service) {
+		this.service = service;
 	}
 
-	public void setAction(String action) {
-		this.action = action;
-	}
-
-	public String getProbleme() {
-		return this.probleme;
-	}
-
-	public void setProbleme(String probleme) {
-		this.probleme = probleme;
-	}
 
 	public String getTheme() {
-		return this.theme;
+		return theme;
 	}
+
 
 	public void setTheme(String theme) {
 		this.theme = theme;
 	}
+
+
+	public int getNbreRecla() {
+		return nbreRecla;
+	}
+
+
+	public void setNbreRecla(int nbreRecla) {
+		this.nbreRecla = nbreRecla;
+	}
+
+
+	public String getDescriptif() {
+		return descriptif;
+	}
+
+
+	public void setDescriptif(String descriptif) {
+		this.descriptif = descriptif;
+	}
+
+
+	public String getAction() {
+		return action;
+	}
+
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+	
 	
 }

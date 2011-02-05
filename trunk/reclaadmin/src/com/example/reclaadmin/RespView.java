@@ -77,7 +77,7 @@ public class RespView extends VerticalLayout {
 			public void menuSelected(MenuItem selectedItem) 
 			{
 				centrale.setVisible(true);
-				switchView(centrale, new AdminMail(__app));
+				switchView(centrale, new AdminMail(__app, centrale));
 			}    
 	};
 	
@@ -86,7 +86,7 @@ public class RespView extends VerticalLayout {
 		public void menuSelected(MenuItem selectedItem) 
 		{
 			centrale.setVisible(true);
-			switchView(centrale, new MailingList(__app));
+			switchView(centrale, new MailingList(__app, centrale));
 		}    
 
 	};
@@ -97,7 +97,7 @@ public class RespView extends VerticalLayout {
 		@Override
 		public void menuSelected(MenuItem selectedItem) {
 			centrale.setVisible(true);
-			switchView(centrale, new TableauActions(__app));
+			switchView(centrale, new TableauActions(__app, centrale));
 		}	
 	};
 	
