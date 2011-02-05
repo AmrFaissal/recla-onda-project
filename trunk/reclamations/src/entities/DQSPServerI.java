@@ -45,8 +45,6 @@ public class DQSPServerI implements DQSPServer {
 
 	}
 
-
-
 	@Override
 	public List<String> listOfAirports() {
 
@@ -69,12 +67,11 @@ public class DQSPServerI implements DQSPServer {
 		return list;
 	}
 
-
 	@Override
 	public void addReclamation(int idPassager, Date date, String nomAeroport,
 			String terminale, String nomService, String remarque,
 			String descriptif, String theme) {
-		
+
 		// getting a connection
 		Connection c = DBConnexion.getConnection();
 
@@ -96,7 +93,29 @@ public class DQSPServerI implements DQSPServer {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
+	}
+
+	@Override
+	public void addAction(String service, String theme, String descriptif, String idAeroport) {
+
+		// getting a connection
+		Connection c = DBConnexion.getConnection();
+
+		try {
+			// preparing the statement
+			PreparedStatement ps = c
+					.prepareStatement("INSERT INTO myActions VALUES (?,?,?,default,default,?)");
+			ps.setString(1, service);
+			ps.setString(2, theme);
+			ps.setString(3, descriptif);
+			ps.setString(4, idAeroport);
+
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
