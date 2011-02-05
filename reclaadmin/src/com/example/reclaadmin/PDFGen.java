@@ -54,10 +54,10 @@ public class PDFGen {
 		try {
 			Statement stmt = c.createStatement();
 			ResultSet rs = stmt
-					.executeQuery("SELECT s.nomService 'theme', r.descriptif 'descriptif',r.action 'action' FROM reclamations.reclamations r, reclamations.service s where r.idService=s.idService; ");
+					.executeQuery("SELECT nomService, descriptif, action FROM reclamation");
 
 			while (rs.next()) {
-				table.addCell(rs.getString("theme"));
+				table.addCell(rs.getString("nomService"));
 				table.addCell(rs.getString("descriptif"));
 				table.addCell(rs.getString("action"));
 				table.setSpacingBefore(15f);

@@ -22,7 +22,7 @@ public class AnalyseModel {
 	/*
 	 * getting a list of all elements
 	 */
-	public List<AnalyseTable> getAll()
+	public List<AnalyseTable> buildAnalyseTable()
 	{
 		List<AnalyseTable> resultList = new ArrayList<AnalyseTable>();
 		
@@ -32,13 +32,14 @@ public class AnalyseModel {
 		//create statement
 		try {
 			Statement stmt = c.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT num, theme, probleme FROM soc.analyseTable");
+			ResultSet rs = stmt.executeQuery("SELECT nomService,theme,descriptif FROM reclamation GROUP BY theme");
 			while(rs.next())
 			{
 				AnalyseTable at = new AnalyseTable();
-				at.setNum(rs.getInt("num"));
+				at.setService(rs.getString("nomService"));
 				at.setTheme(rs.getString("theme"));
-				at.setProbleme(rs.getString("probleme"));
+				at.setNbreRecla(new AnalyseModel().nombreReclaParTheme(rs.getString("theme")));
+				at.setDescriptif(rs.getString("descriptif"));
 				resultList.add(at);
 			}
 			rs.close();
@@ -50,6 +51,32 @@ public class AnalyseModel {
 		
 		
 		return resultList;
+	}
+	
+	public int nombreReclaParTheme(String theme){
+		
+		int nombre = 0;
+		
+		//getting a connection
+		Connection c = DBConnexion.getConnection();
+		
+		//prepare statement
+		try {
+			PreparedStatement ps = c.prepareStatement("SELECT count(*) num FROM reclamation where theme=?");
+			ps.setString(1,theme);
+			
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()){
+				nombre = rs.getInt("num");
+			}
+			ps.close();
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return nombre;
 	}
 	
 	/*
@@ -73,5 +100,4 @@ public class AnalyseModel {
 		
 		return 0;	
 	}
-
 }

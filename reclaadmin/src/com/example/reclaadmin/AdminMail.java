@@ -5,6 +5,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -25,9 +26,11 @@ public class AdminMail extends VerticalLayout{
 	
 	
 	
-	public AdminMail(ReclaadminApplication application) 
+	public AdminMail(ReclaadminApplication application, Panel panel) 
 	{
 		__app = application;
+		
+		panel.setSizeUndefined();
 		
 		setSpacing(false);
 		
@@ -104,7 +107,7 @@ public class AdminMail extends VerticalLayout{
 	 */
 	public void sendButtonClick(Button.ClickEvent event)
 	{
-		__app.getMainWindow().showNotification("Mail sent successfully...");	
+		__app.getMainWindow().showNotification("Message Envoyé avec Succès !");	
 	}
 
 }
