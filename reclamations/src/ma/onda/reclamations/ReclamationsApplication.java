@@ -51,6 +51,7 @@ public class ReclamationsApplication extends Application {
 
 	private int id = IdGenerator.generateID();
 
+	private DQSPServer _serverI = new DQSPServerI();
 	private DQSPServer __serverI = new DQSPServerI();
 
 	@SuppressWarnings("deprecation")
@@ -162,17 +163,17 @@ public class ReclamationsApplication extends Application {
 		hlayout2.addComponent(_zones);
 
 		l3.addComponent(hlayout2);
-		
+
 		zones.addListener(new Property.ValueChangeListener() {
-			
+
 			@Override
-			public void valueChange(ValueChangeEvent event) {	
+			public void valueChange(ValueChangeEvent event) {
 				_zones.setEnabled(false);
-				}
-			});
-		
+			}
+		});
+
 		_zones.addListener(new Property.ValueChangeListener() {
-			
+
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				zones.setEnabled(false);
@@ -220,7 +221,7 @@ public class ReclamationsApplication extends Application {
 		suggest.addItem("Les moyens de transport");
 		suggest.addItem("Papier");
 		suggest.addItem("L'éclairage");
-		
+
 		hlayout3.setMargin(true);
 		hlayout3.setSpacing(true);
 		hlayout3.addComponent(suggest);
@@ -285,12 +286,12 @@ public class ReclamationsApplication extends Application {
 											.toString(),
 									form2.getField("destination").getValue()
 											.toString(),
-									form1.getField("nationalite").getValue() 
+									form1.getField("nationalite").getValue()
 											.toString());
 				}
 
 				if (!cb.getValue().toString().equals("")) {
-					__serverI.addReclamation(
+					_serverI.addReclamation(
 							id,
 							new java.sql.Date(((java.util.Date) form2.getField(
 									"date").getValue()).getTime()), cb
@@ -300,6 +301,10 @@ public class ReclamationsApplication extends Application {
 							suggest.getValue().toString(), String
 									.valueOf(details.getValue()), zones
 									.getValue().toString());
+
+					__serverI.addAction(new ServiceParser().parseService(zones
+							.getValue().toString()), suggest.getValue()
+							.toString(), String.valueOf(details.getValue()), cb.getValue().toString());
 
 				} else {
 					cb.setRequired(true);
@@ -312,5 +317,4 @@ public class ReclamationsApplication extends Application {
 		custom.addComponent(submitButton, "submitButton");
 
 	}
-
 }
