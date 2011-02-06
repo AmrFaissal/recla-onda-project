@@ -17,6 +17,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Window;
 
 import entities.AnalyseTable;
 
@@ -31,13 +32,15 @@ public class TableauAnalyse extends VerticalLayout {
 	ComboBox airports;
 	DQSPServer _server;
 	HorizontalLayout hlayout;
+	ReclaadminApplication __app;
 	
-	
-	public TableauAnalyse(Panel panel)
+	public TableauAnalyse(ReclaadminApplication application, final Panel panel)
 	{
+		__app = application;
 		//panel.setWidth("635px");
 		//panel.setHeight("620px");
 		panel.setSizeUndefined();
+		panel.setCaption("Sélectionnez un aéroport");
 		
 		formatter = new SimpleDateFormat("d/MM/yyyy");
 		table = new Table("Tableau d'analyse - " + formatter.format(new java.util.Date()));
@@ -72,19 +75,26 @@ public class TableauAnalyse extends VerticalLayout {
 				container.addContainerProperty("Nombre de Réclamations", Integer.class, null);
 				container.addContainerProperty("Observations", String.class, null);
 				
-				for (AnalyseTable at : am.buildAnalyseTable())
+				if (am.buildAnalyseTable(String.valueOf(airports.getValue())).size() != 0)
 				{
-					Item item = container.addItem(at);
-					item.getItemProperty("Service").setValue(at.getService());
-					item.getItemProperty("Thème").setValue(at.getTheme());
-					item.getItemProperty("Nombre de Réclamations").setValue(at.getNbreRecla());
-					item.getItemProperty("Observations").setValue(at.getDescriptif());
+					panel.setCaption("");
+					for (AnalyseTable at : am.buildAnalyseTable(String.valueOf(airports.getValue())))
+					{
+						Item item = container.addItem(at);
+						item.getItemProperty("Service").setValue(at.getService());
+						item.getItemProperty("Thème").setValue(at.getTheme());
+						item.getItemProperty("Nombre de Réclamations").setValue(at.getNbreRecla());
+						item.getItemProperty("Observations").setValue(at.getDescriptif());
+					}
+					table.setContainerDataSource(container);
+					table.setPageLength(0);
+					table.setFooterVisible(true);
+					table.setVisible(true);
+				} else {
+					panel.setCaption("Sélectionnez un aéroport");
+					table.setVisible(false);
+					__app.getMainWindow().showNotification("Notification", "Pas de réclamations pour cet aéroport", Window.Notification.TYPE_TRAY_NOTIFICATION);
 				}
-				
-				table.setContainerDataSource(container);
-				table.setPageLength(0);
-				table.setFooterVisible(true);
-				table.setVisible(true);
 				//hlayout.setVisible(true);
 			}
 		});

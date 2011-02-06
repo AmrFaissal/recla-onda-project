@@ -57,16 +57,15 @@ public class _FreeFormDelegate implements FreeformStatementDelegate {
 			throws UnsupportedOperationException, SQLException {
 
 		PreparedStatement statement = null;
-
 		if (row.getId() instanceof TemporaryRowId) {
 			statement = conn
-					.prepareStatement("INSERT INTO myActions VALUES(?, ?, ?, ?, DEFAULT)");
+					.prepareStatement("INSERT INTO myActions VALUES(?, ?, ?, ?, DEFAULT,null)");
 			setRowValues(statement, row);
 		} else {
 			statement = conn
-					.prepareStatement("UPDATE myActions SET action = ?");
+					.prepareStatement("UPDATE myActions SET service = ?, theme = ?, observations = ?, action = ?, validation = ? WHERE id = ?");
 			setRowValues(statement, row);
-			statement.setString(1, (String) row.getItemProperty("action")
+			statement.setInt(6, (Integer) row.getItemProperty("id")
 					.getValue());
 		}
 
@@ -78,8 +77,13 @@ public class _FreeFormDelegate implements FreeformStatementDelegate {
 	@Override
 	public boolean removeRow(Connection conn, RowItem row)
 			throws UnsupportedOperationException, SQLException {
-		// TODO Auto-generated method stub
-		return false;
+
+		PreparedStatement statement = conn
+				.prepareStatement("DELETE FROM myActions WHERE id = ?");
+		statement.setInt(1, (Integer) row.getItemProperty("id").getValue());
+		int rowsChanged = statement.executeUpdate();
+		statement.close();
+		return rowsChanged == 1;
 	}
 
 	@Override
@@ -95,7 +99,7 @@ public class _FreeFormDelegate implements FreeformStatementDelegate {
 
 		StatementHelper sh = new StatementHelper();
 		StringBuffer query = new StringBuffer(
-				"SELECT service, theme, observations, action FROM myActions");
+				"SELECT id, service, theme, observations, action FROM myActions");
 		if (filters != null) {
 			for (Filter f : filters) {
 				generateFilter(query, f, filters.indexOf(f) == 0,
@@ -132,7 +136,8 @@ public class _FreeFormDelegate implements FreeformStatementDelegate {
 			throws UnsupportedOperationException {
 
 		StatementHelper sh = new StatementHelper();
-		StringBuffer query = new StringBuffer("SELECT service, theme, observations, action FROM myActions WHERE service = ?");
+		StringBuffer query = new StringBuffer(
+				"SELECT service, theme, observations, action FROM myActions WHERE idAeroport = ?");
 		sh.addParameterValue(keys[0]);
 		sh.setQueryString(query.toString());
 		return sh;
@@ -192,13 +197,13 @@ public class _FreeFormDelegate implements FreeformStatementDelegate {
 			}
 		}
 		if (firstFilter) {
-			sb.append("WHERE");
+			sb.append(" WHERE ");
 		} else {
 			if (FilteringMode.FILTERING_MODE_INCLUSIVE.equals(filterMode)) {
-				sb.append("AND");
+				sb.append(" AND ");
 			} else if (FilteringMode.FILTERING_MODE_EXCLUSIVE
 					.equals(filterMode)) {
-				sb.append("OR");
+				sb.append(" OR ");
 			}
 		}
 		sb.append(f.toPreparedStatementString());

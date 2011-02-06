@@ -20,6 +20,7 @@ public class TableauBord extends VerticalLayout{
 		
 		__app = application;
 		panel.setSizeUndefined();
+		panel.setCaption("Tableau de Bord");
 		addComponent(getMap());
 	}
 	

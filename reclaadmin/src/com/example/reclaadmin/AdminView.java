@@ -118,7 +118,7 @@ public class AdminView extends VerticalLayout {
 		@Override
 		public void menuSelected(MenuItem selectedItem) {
 			centrale.setVisible(true);
-			switchView(centrale, new TableauAnalyse(centrale));
+			switchView(centrale, new TableauAnalyse(__app, centrale));
 		}
 	};
 
@@ -127,7 +127,7 @@ public class AdminView extends VerticalLayout {
 		@Override
 		public void menuSelected(MenuItem selectedItem) {
 			centrale.setVisible(true);
-			switchView(centrale, new TableauReclamation(centrale));
+			switchView(centrale, new TableauReclamation(__app, centrale));
 		}
 	};
 
@@ -174,7 +174,7 @@ public class AdminView extends VerticalLayout {
 		@Override
 		public void menuSelected(MenuItem selectedItem) {
 			centrale.setVisible(true);
-			switchView(centrale, new DefineActions(centrale, __app));
+			switchView(centrale, new _DefineActions(centrale, __app));
 		}
 	};
 

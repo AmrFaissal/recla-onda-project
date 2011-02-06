@@ -11,7 +11,8 @@ import java.util.List;
 
 import entities.DBConnexion;
 
-public class DQSPServerI implements DQSPServer {
+@SuppressWarnings("serial")
+public class DQSPServerI implements DQSPServer, java.io.Serializable {
 
 	@Override
 	public void addPassager(int idPassager, String sex, String nom,
@@ -99,7 +100,8 @@ public class DQSPServerI implements DQSPServer {
 	}
 
 	@Override
-	public void addAction(String service, String theme, String descriptif, String idAeroport) {
+	public void addAction(String service, String theme, String descriptif,
+			String idAeroport) {
 
 		// getting a connection
 		Connection c = DBConnexion.getConnection();
@@ -107,7 +109,7 @@ public class DQSPServerI implements DQSPServer {
 		try {
 			// preparing the statement
 			PreparedStatement ps = c
-					.prepareStatement("INSERT INTO myActions VALUES (?,?,?,default,default,?)");
+					.prepareStatement("INSERT INTO myActions VALUES (?,?,?,default,default,?,null)");
 			ps.setString(1, service);
 			ps.setString(2, theme);
 			ps.setString(3, descriptif);
@@ -119,6 +121,77 @@ public class DQSPServerI implements DQSPServer {
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public List<String> listOfObservationsPerAirport(String airport) {
+
+		List<String> list = new ArrayList<String>();
+
+		Connection c = DBConnexion.getConnection();
+		try {
+			PreparedStatement ps = c
+					.prepareStatement("SELECT m.`observations` FROM myActions m WHERE idAeroport=? AND validation='EN COURS'");
+			ps.setString(1, airport);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				list.add(rs.getString("observations"));
+			}
+			ps.close();
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public int updateMyActions(String observations, String action) {
+
+		// getting a connection
+		Connection c = DBConnexion.getConnection();
+
+		try {
+			// preparing the statement
+			PreparedStatement ps = c
+					.prepareStatement("UPDATE myActions SET action=? WHERE observations=?");
+			ps.setString(1, action);
+			ps.setString(2, observations);
+
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return 0;
+	}
+
+	@Override
+	public String actionForObservation(String observation) {
+
+		String action = null;
+
+		if (!observation.equals("")) {
+			Connection c = DBConnexion.getConnection();
+			try {
+				PreparedStatement ps = c
+						.prepareStatement("SELECT m.`action` FROM myActions m WHERE observations=?");
+				ps.setString(1, observation);
+				ResultSet rs = ps.executeQuery();
+				while (rs.next()) {
+					action = rs.getString("action");
+				}
+				ps.close();
+				rs.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			action = "";
+		}
+		return action;
 	}
 
 }
