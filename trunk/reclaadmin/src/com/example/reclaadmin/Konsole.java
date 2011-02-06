@@ -25,6 +25,7 @@ public class Konsole extends VerticalLayout {
 		
 		panel.setSizeUndefined();
 		panel.setIcon(new ThemeResource("icons/actions/openterm.png"));
+		panel.setCaption("Konsole");
 		
 		buildKonsole();
 		

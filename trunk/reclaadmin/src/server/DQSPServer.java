@@ -12,6 +12,12 @@ public interface DQSPServer {
 			String remarque, String descriptif, String theme);
 
 	public void addAction(String service, String theme, String descriptif, String idAeroport);
+	
+	public java.util.List<String> listOfObservationsPerAirport(String airport);
+	
+	public int updateMyActions(String observations, String action);
+	
+	public String actionForObservation(String observation);
 
 	public java.util.List<String> listOfAirports();
 

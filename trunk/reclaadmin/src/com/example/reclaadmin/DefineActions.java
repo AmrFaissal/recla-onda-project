@@ -8,6 +8,7 @@ import com.vaadin.addon.sqlcontainer.SQLContainer;
 import com.vaadin.addon.sqlcontainer.connection.JDBCConnectionPool;
 import com.vaadin.addon.sqlcontainer.connection.SimpleJDBCConnectionPool;
 import com.vaadin.addon.sqlcontainer.query.FreeformQuery;
+import com.vaadin.addon.sqlcontainer.query.TableQuery;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.terminal.ThemeResource;
@@ -32,9 +33,10 @@ public class DefineActions extends VerticalLayout {
 	JDBCConnectionPool pool;
 	SQLContainer container;
 	FreeformQuery query;
+	TableQuery tableQuery;
 	ReclaadminApplication __app;
 
-	public DefineActions(Panel panel, ReclaadminApplication application) {
+	public DefineActions(final Panel panel, ReclaadminApplication application) {
 
 		__app = application;
 		
@@ -42,6 +44,7 @@ public class DefineActions extends VerticalLayout {
 		// panel.setHeight("620px");
 		panel.setSizeUndefined();
 		panel.setIcon(new ThemeResource("icons/actions/misc.png"));
+		panel.setCaption("Sélectionnez un aéroport");
 
 		table = new Table("Définition des Actions");
 		table.setVisible(false);
@@ -66,10 +69,13 @@ public class DefineActions extends VerticalLayout {
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				
-				if (getActionsContainer(String.valueOf(airports.getValue())).size()!= 0){
+				if (getActionsContainer(String.valueOf(airports.getValue())).size() != 0 ){
+					panel.setCaption("");
 					table.setContainerDataSource(getActionsContainer(String.valueOf(airports.getValue())));
 					table.setFooterVisible(true);
 					table.setPageLength(0);
+					table.setColumnFooter("service", "Total");
+					table.setColumnFooter("observations", String.valueOf(getActionsContainer(String.valueOf(airports.getValue())).size()));
 					table.setVisible(true);
 					hlayout.setVisible(true);
 				}
@@ -89,6 +95,7 @@ public class DefineActions extends VerticalLayout {
 		table.setSelectable(true);
 		table.setColumnReorderingAllowed(true);
 		table.setColumnCollapsingAllowed(true);
+		//table.setVisibleColumns(table.getColumnHeaders());
 
 		table.setColumnIcon("service", new ThemeResource("icons/actions/power.png"));
 		table.setColumnIcon("theme", new ThemeResource("icons/actions/misc.png"));
@@ -98,10 +105,11 @@ public class DefineActions extends VerticalLayout {
 
 		setMargin(true);
 		setSpacing(true);
-
+ 
 		addComponent(table);
 
-		hlayout.setMargin(true);
+		//hlayout.setMargin(true);
+		hlayout.setSpacing(true);
 
 		hlayout.addComponent(edit);
 		hlayout.addComponent(save);
@@ -111,7 +119,7 @@ public class DefineActions extends VerticalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				edit.setEnabled(false);
-				table.setEditable(!table.isEditable());
+				table.setEditable(true);
 				table.setWriteThrough(true);
 			}
 		});
@@ -121,9 +129,7 @@ public class DefineActions extends VerticalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				edit.setEnabled(true);
-				table.setEditable(!table.isEditable());
 				table.commit();
-
 				try {
 					container.commit();
 				} catch (UnsupportedOperationException e) {
@@ -131,8 +137,9 @@ public class DefineActions extends VerticalLayout {
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
+				table.setEditable(false);
 			}
-		});
+		}); 
 		
 		addComponent(hlayout);
 		setComponentAlignment(hlayout, "right");
@@ -146,10 +153,13 @@ public class DefineActions extends VerticalLayout {
 		String sQuery = "SELECT service,theme,observations,action FROM myActions WHERE validation='EN COURS' AND idAeroport='"+airport+"'";
 		
 		try {
+			
 			pool = new SimpleJDBCConnectionPool("com.mysql.jdbc.Driver",
 					"jdbc:mysql://localhost:3306/pl", "root", "0");
-			query = new FreeformQuery(sQuery, pool, "service");
+			//tableQuery = new TableQuery("myActions", pool);
+			query = new FreeformQuery(sQuery, pool, "id");
 			//query.setDelegate(new _FreeFormDelegate());
+			//container = new SQLContainer(tableQuery);
 			container = new SQLContainer(query);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,17 +21,19 @@ public class AnalyseModel {
 	/*
 	 * getting a list of all elements
 	 */
-	public List<AnalyseTable> buildAnalyseTable()
+	public List<AnalyseTable> buildAnalyseTable(String airport)
 	{
 		List<AnalyseTable> resultList = new ArrayList<AnalyseTable>();
+		String query = "SELECT nomService,theme,descriptif FROM reclamation WHERE nomAeroport=? GROUP BY theme";
 		
 		//getting a connection
 		Connection c = DBConnexion.getConnection();
 		
 		//create statement
 		try {
-			Statement stmt = c.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT nomService,theme,descriptif FROM reclamation GROUP BY theme");
+			PreparedStatement ps = c.prepareStatement(query);
+			ps.setString(1, airport); 
+			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
 				AnalyseTable at = new AnalyseTable();
@@ -43,7 +44,7 @@ public class AnalyseModel {
 				resultList.add(at);
 			}
 			rs.close();
-			stmt.close();
+			ps.close();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -77,27 +78,5 @@ public class AnalyseModel {
 		}
 		
 		return nombre;
-	}
-	
-	/*
-	 * update actions
-	 */
-	public int updateAction( String action, String theme)
-	{
-		//getting a connection
-		Connection c = DBConnexion.getConnection();
-		
-		//prepare statement
-		try {
-			PreparedStatement ps = c.prepareStatement("UPDATE soc.analyseTable SET action=? WHERE theme=?");
-			ps.setString(1,action);
-			ps.setString(2, theme);
-			ps.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return 0;	
 	}
 }

@@ -31,7 +31,7 @@ public class AdminMail extends VerticalLayout{
 		__app = application;
 		
 		panel.setSizeUndefined();
-		
+		panel.setCaption("Email");
 		setSpacing(false);
 		
 		hlayout.setSpacing(true);

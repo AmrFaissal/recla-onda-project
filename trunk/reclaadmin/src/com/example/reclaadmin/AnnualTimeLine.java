@@ -27,6 +27,8 @@ public class AnnualTimeLine extends VerticalLayout {
 		panel.setWidth("635px");
 		panel.setHeight("620px");
 		
+		panel.setCaption("Synthèse de l'année");
+		
 		Timeline timeline = new Timeline(title);
 		timeline.setWidth("100%");
 		

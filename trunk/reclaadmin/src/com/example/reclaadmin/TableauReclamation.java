@@ -12,6 +12,8 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
+
 import entities.Reclamation;
 import entities.ReclamationModel;
 
@@ -22,12 +24,16 @@ public class TableauReclamation extends VerticalLayout {
 	ReclamationModel rm;
 	ComboBox airports;
 	DQSPServer _server;
+	ReclaadminApplication __app;
 	
-	public TableauReclamation(Panel panel){
+	public TableauReclamation(ReclaadminApplication application, final Panel panel){
+		
+		__app = application;
 		
 		//panel.setWidth("635px");
 		//panel.setHeight("620px");
 		panel.setSizeUndefined();
+		panel.setCaption("Sélectionnez un aéroport");
 		
 		table = new Table("Tableau de Réclamation");
 		table.setVisible(false);
@@ -46,27 +52,37 @@ public class TableauReclamation extends VerticalLayout {
 			
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				//filling out the container
+				
+				//getting the container
 				IndexedContainer container = new IndexedContainer();
 				container.addContainerProperty("ID Passager", Integer.class, null);
 				container.addContainerProperty("Date", java.sql.Date.class, null);
 				container.addContainerProperty("Terminale", String.class, null);
 				container.addContainerProperty("Descriptif", String.class, null);
-				for (Reclamation a : rm.getAirportsReclamations(String.valueOf(airports.getValue())))
-				{
-					Item item = container.addItem(a);
-					item.getItemProperty("ID Passager").setValue(a.getIdPassager());
-					item.getItemProperty("Date").setValue(a.getDate());
-					item.getItemProperty("Terminale").setValue(a.getTerminale());
-					item.getItemProperty("Descriptif").setValue(a.getDescriptif());
-				}
 				
-				table.setContainerDataSource(container);
-				table.setFooterVisible(true);
-				table.setColumnFooter("ID Passager", "Total");
-				table.setColumnFooter("Descriptif", String.valueOf(rm.getAirportsReclamations(String.valueOf(airports.getValue())).size()));
-				table.setPageLength(0);
-				table.setVisible(true);
+				if (rm.getAirportsReclamations(String.valueOf(airports.getValue())).size() != 0){
+					panel.setCaption("");
+					//filling out the container
+					for (Reclamation a : rm.getAirportsReclamations(String.valueOf(airports.getValue())))
+					{
+						Item item = container.addItem(a);
+						item.getItemProperty("ID Passager").setValue(a.getIdPassager());
+						item.getItemProperty("Date").setValue(a.getDate());
+						item.getItemProperty("Terminale").setValue(a.getTerminale());
+						item.getItemProperty("Descriptif").setValue(a.getDescriptif());
+					}
+					
+					table.setContainerDataSource(container);
+					table.setFooterVisible(true);
+					table.setColumnFooter("ID Passager", "Total");
+					table.setColumnFooter("Descriptif", String.valueOf(rm.getAirportsReclamations(String.valueOf(airports.getValue())).size()));
+					table.setPageLength(0);
+					table.setVisible(true);
+				} else {
+					panel.setCaption("Sélectionnez un aéroport");
+					__app.getMainWindow().showNotification("Notification","Pas de réclamations pour cet aéroport",Window.Notification.TYPE_TRAY_NOTIFICATION);
+					table.setVisible(false);
+				}
 			}
 		});
 			
