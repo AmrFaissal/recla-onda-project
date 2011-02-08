@@ -105,7 +105,7 @@ public class DQSPServerI implements DQSPServer {
 		try {
 			// preparing the statement
 			PreparedStatement ps = c
-					.prepareStatement("INSERT INTO myActions VALUES (?,?,?,default,default,?)");
+					.prepareStatement("INSERT INTO myActions VALUES (?,?,?,default,default,?,null)");
 			ps.setString(1, service);
 			ps.setString(2, theme);
 			ps.setString(3, descriptif);

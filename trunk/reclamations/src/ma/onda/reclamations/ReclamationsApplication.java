@@ -2,8 +2,6 @@ package ma.onda.reclamations;
 
 import java.util.Arrays;
 import com.vaadin.Application;
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
@@ -15,44 +13,50 @@ import entities.DQSPServerI;
 @SuppressWarnings("serial")
 public class ReclamationsApplication extends Application {
 
-	private Window main;
-	private CustomLayout custom = new CustomLayout("client");
-	// private CustomLayout custom1 = new CustomLayout("avis");
-	private VerticalLayout l1 = new VerticalLayout();
-	private VerticalLayout l2 = new VerticalLayout();
-	private VerticalLayout l3 = new VerticalLayout();
-	private VerticalLayout l4 = new VerticalLayout();
-	private static HorizontalLayout hlayout = new HorizontalLayout();
-	private static HorizontalLayout hlayout1 = new HorizontalLayout();
-	private static HorizontalLayout hlayout2 = new HorizontalLayout();
-	private static HorizontalLayout hlayout3 = new HorizontalLayout();
-	private static final ThemeResource icon1 = new ThemeResource(
+	// main window
+	Window main;
+
+	// Different layouts
+	static CustomLayout custom = new CustomLayout("client");
+	static VerticalLayout l1 = new VerticalLayout();
+	static VerticalLayout l2 = new VerticalLayout();
+	static VerticalLayout l3 = new VerticalLayout();
+	static VerticalLayout l4 = new VerticalLayout();
+	static HorizontalLayout hlayout = new HorizontalLayout();
+	static HorizontalLayout hlayout1 = new HorizontalLayout();
+	static HorizontalLayout hlayout2 = new HorizontalLayout();
+	static HorizontalLayout hlayout3 = new HorizontalLayout();
+
+	// icons for tabs
+	static final ThemeResource icon1 = new ThemeResource(
 			"icons/actions/ledyellow.png");
-	private static final ThemeResource icon2 = new ThemeResource(
+	static final ThemeResource icon2 = new ThemeResource(
 			"icons/actions/ledgreen.png");
-	private static final ThemeResource icon3 = new ThemeResource(
+	static final ThemeResource icon3 = new ThemeResource(
 			"icons/actions/ledred.png");
-	private static final ThemeResource icon4 = new ThemeResource(
+	static final ThemeResource icon4 = new ThemeResource(
 			"icons/actions/ledblue.png");
-	private TabSheet tabSheet = new TabSheet();
-	private Button submitButton = new Button("Submit");
-	private Form form1 = new Form();
-	private Passager passager = new Passager();
-	private Form form2 = new Form();
-	private GPassager gpassager = new GPassager();
-	private Form form3 = new Form();
-	private Form form4 = new Form();
-	private Form form5 = new Form();
-	/*
-	 * private OptionGroup options1 = new OptionGroup(); private OptionGroup
-	 * options2 = new OptionGroup(); private OptionGroup options3 = new
-	 * OptionGroup();
-	 */
 
-	private int id = IdGenerator.generateID();
+	// main tab sheet
+	TabSheet tabSheet = new TabSheet();
+	Button submitButton = new Button("Submit");
 
-	private DQSPServer _serverI = new DQSPServerI();
-	private DQSPServer __serverI = new DQSPServerI();
+	Passager passager = new Passager();
+	GPassager gpassager = new GPassager();
+
+	// Different forms
+	Form form1 = new Form();
+	Form form2 = new Form();
+	Form form3 = new Form();
+	Form form4 = new Form();
+	Form form5 = new Form();
+
+	// Generate a random ID
+	int id = IdGenerator.generateID();
+
+	// Instances of server implementation
+	DQSPServer _serverI = new DQSPServerI();
+	DQSPServer __serverI = new DQSPServerI();
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -62,6 +66,7 @@ public class ReclamationsApplication extends Application {
 		main.setContent(custom);
 		setMainWindow(main);
 
+		tabSheet.setImmediate(true);
 		tabSheet.setHeight("460px");
 		tabSheet.setWidth("700px");
 
@@ -134,7 +139,8 @@ public class ReclamationsApplication extends Application {
 
 		final ComboBox zones = new ComboBox("Zone Départ");
 		zones.setInputPrompt("Zone Départ");
-		zones.addItem("Parking voitures");
+		zones.setImmediate(true);
+		zones.addItem("Parkings");
 		zones.addItem("Hall Public Départ");
 		zones.addItem("Comptoirs d'information");
 		zones.addItem("Comptoirs d'enregistrement");
@@ -144,8 +150,8 @@ public class ReclamationsApplication extends Application {
 		zones.addItem("Douane");
 		zones.addItem("Police");
 		zones.addItem("Embarquement");
+		zones.addItem("Comptoir d'informations touristiques");
 		hlayout2.addComponent(zones);
-		zones.setImmediate(true);
 
 		final ComboBox _zones = new ComboBox("Zone Arrivée");
 		_zones.setInputPrompt("Zone Arrivée");
@@ -158,89 +164,42 @@ public class ReclamationsApplication extends Application {
 		_zones.addItem("Restauration");
 		_zones.addItem("Blocs sanitaires");
 		_zones.addItem("Comptoir d'informations touristiques");
-		_zones.addItem("Parking voitures");
+		_zones.addItem("Parkings");
 		_zones.setImmediate(true);
 		hlayout2.addComponent(_zones);
 
 		l3.addComponent(hlayout2);
 
-		zones.addListener(new Property.ValueChangeListener() {
-
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				_zones.setEnabled(false);
-			}
-		});
-
-		_zones.addListener(new Property.ValueChangeListener() {
-
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				zones.setEnabled(false);
-			}
-		});
-		// custom1.addComponent(form3, "form3");
-		// custom1.addComponent(form4, "form4");
-
-		/*
-		 * options1.setCaption("Zone Départ"); options1.setMultiSelect(false);
-		 * 
-		 * options2.setCaption("Zone Arrivée"); options2.setMultiSelect(false);
-		 * // filling out options1 options1.addItem("Parking voitures");
-		 * options1.addItem("Hall Public Départ");
-		 * options1.addItem("Comptoirs d'information");
-		 * options1.addItem("Comptoirs d'enregistrement");
-		 * options1.addItem("Commerces"); options1.addItem("Restauration");
-		 * options1.addItem("Blocs sanitaires"); options1.addItem("Douane");
-		 * options1.addItem("Police"); options1.addItem("Embarquement");
-		 * 
-		 * // filling out options2 options2.addItem("Débarquement");
-		 * options2.addItem("Transit et correspondance");
-		 * options2.addItem("Police"); options2.addItem("Livraison bagages");
-		 * options2.addItem("Douane"); options2.addItem("Commerces");
-		 * options2.addItem("Restauration");
-		 * options2.addItem("Blocs sanitaires");
-		 * options2.addItem("Comptoir d'informations touristiques");
-		 * options2.addItem("Parking voitures");
-		 * 
-		 * custom1.addComponent(options1, "options1");
-		 * custom1.addComponent(options2, "options2");
-		 */
-
 		form5.setCaption("Vos suggestions ou remarques concernent");
 		l3.addComponent(form5);
 		final ComboBox suggest = new ComboBox("Thèmes");
+		suggest.setImmediate(true);
 		suggest.setInputPrompt("Thèmes");
+		suggest.addItem("Liaison ville/aérogare");
 		suggest.addItem("La signalisation routière");
+		suggest.addItem("La signalisation des services");
 		suggest.addItem("L'accès à l'aéroport");
+		suggest.addItem("Circulation verticale");
 		suggest.addItem("Tableaux d'affichage");
 		suggest.addItem("Les chariots à bagages");
 		suggest.addItem("Les compagnies aériennes");
+		suggest.addItem("Comportement des agents");
+		suggest.addItem("Tapis livraison bagages");
 		suggest.addItem("Les facilitations aux Personnes à Mobilité Réduite");
 		suggest.addItem("Les facilitations MRE (marocains résidents à l'étranger)");
 		suggest.addItem("Les moyens de transport");
-		suggest.addItem("Papier");
-		suggest.addItem("L'éclairage");
+		suggest.addItem("Passerelles");
+		suggest.addItem("Horloges");
+		suggest.addItem("Apparence/Visiblité");
+		suggest.addItem("Eclairages");
+		suggest.addItem("Salles d'embarquement");
+		suggest.addItem("Salles de débarquement");
+		suggest.addItem("Espaces Verts");
 
 		hlayout3.setMargin(true);
 		hlayout3.setSpacing(true);
 		hlayout3.addComponent(suggest);
 		l3.addComponent(hlayout3);
-		// custom1.addComponent(form5, "form5");
-
-		// filling out options 3
-		/*
-		 * options3.setMultiSelect(true);
-		 * options3.addItem("La signalisation routière");
-		 * options3.addItem("L'accès à l'aéroport");
-		 * options3.addItem("Les chariots à bagages");
-		 * options3.addItem("Les compagnies aériennes");
-		 * options3.addItem("Les facilitations aux Personnes à Mobilité Réduite"
-		 * ); options3.addItem(
-		 * "Les facilitations MRE (marocains résidents à l'étranger)");
-		 * options3.addItem("Les moyens de transport");
-		 * custom1.addComponent(options3, "options3");
-		 */
 
 		l4.setMargin(true);
 		l4.setSpacing(true);
@@ -304,7 +263,8 @@ public class ReclamationsApplication extends Application {
 
 					__serverI.addAction(new ServiceParser().parseService(zones
 							.getValue().toString()), suggest.getValue()
-							.toString(), String.valueOf(details.getValue()), cb.getValue().toString());
+							.toString(), String.valueOf(details.getValue()), cb
+							.getValue().toString());
 
 				} else {
 					cb.setRequired(true);
