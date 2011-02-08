@@ -3,6 +3,7 @@ package ma.onda.reclamations;
 import java.util.Locale;
 
 import com.vaadin.data.Item;
+import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DefaultFieldFactory;
@@ -56,6 +57,9 @@ public class PassagerFieldFactory extends DefaultFieldFactory {
 
 		if ("email".equals(propertyId)) {
 			//validate mail addresses
+			TextField txt = (TextField)f;
+			txt.addValidator(new EmailValidator("exemple@mail.com"));
+			txt.setValidationVisible(true);
 		}
 
 		return f;
