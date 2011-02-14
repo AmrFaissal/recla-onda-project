@@ -1,5 +1,7 @@
 package com.example.reclaadmin;
 
+import java.net.UnknownHostException;
+
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Layout;
@@ -31,7 +33,7 @@ public class RespView extends VerticalLayout {
 		
 		centrale.setIcon(new ThemeResource("icons/actions/wizard.png"));
 		centrale.setWidth("635px");
-		centrale.setHeight("620px");
+		//centrale.setHeight("620px");
 		//centrale.setSizeUndefined();
 		centrale.setVisible(false);
 		
@@ -45,10 +47,12 @@ public class RespView extends VerticalLayout {
 		email.addItem("Liste des contacts", new ThemeResource("icons/actions/mail_replyall.png"), getMailingList);
 		
 		
-		MenuBar.MenuItem analyse = mainmenu.addItem("Actions Entreprise", getAnalyse);
+		MenuBar.MenuItem analyse = mainmenu.addItem("Actions Entreprise", null);
 		analyse.setIcon(new ThemeResource("icons/actions/wizard.png"));
-		analyse.addItem("Tableau des actions", new ThemeResource("icons/actions/misc.png"), null);
+		analyse.addItem("Tableau des actions", new ThemeResource("icons/actions/misc.png"), getAnalyse);
 		
+		MenuBar.MenuItem dConsole = mainmenu.addItem("Konsole", decisiaKonsole);
+		dConsole.setIcon(new ThemeResource("icons/actions/openterm.png"));
 		
 		MenuBar.MenuItem print = mainmenu.addItem("Imprimer", null);
 		print.setIcon(new ThemeResource("icons/actions/fileprint.png"));
@@ -67,8 +71,12 @@ public class RespView extends VerticalLayout {
 	private Command _logout = new Command() {
 		@Override
 		public void menuSelected(MenuItem selectedItem) {
-			__app.getViewManager().switchScreen(LoginScreen.class.getName(), new LoginScreen(__app));
-			
+			try {
+				__app.getViewManager().switchScreen(LoginScreen.class.getName(), new LoginScreen(__app));
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	};
 
@@ -99,6 +107,15 @@ public class RespView extends VerticalLayout {
 			centrale.setVisible(true);
 			switchView(centrale, new TableauActions(__app, centrale));
 		}	
+	};
+	
+	private Command decisiaKonsole = new Command() {
+
+		@Override
+		public void menuSelected(MenuItem selectedItem) {
+			centrale.setVisible(true);
+			switchView(centrale, new Konsole(centrale));
+		}
 	};
 	
 	

@@ -79,4 +79,5 @@ public class AnalyseModel {
 		
 		return nombre;
 	}
+	
 }

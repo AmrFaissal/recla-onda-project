@@ -92,7 +92,7 @@ public class DQSPServerI implements DQSPServer, java.io.Serializable {
 			ps.setString(8, theme);
 
 			ps.executeUpdate();
-
+ 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -192,6 +192,83 @@ public class DQSPServerI implements DQSPServer, java.io.Serializable {
 			action = "";
 		}
 		return action;
+	}
+
+	@Override
+	public int numberOfAppearancesPerMonth(String remarque, String airport) {
+		
+		int returnVal = 0;
+		
+		if (!remarque.equals("")){
+			// getting a connection
+			Connection c = DBConnexion.getConnection();
+			try {
+				// preparing the statement 
+				PreparedStatement ps = c
+						.prepareStatement("SELECT COUNT(DISTINCT(MONTH(r.`date`))) numMois FROM reclamation r WHERE remarque=? AND nomAeroport=?");
+				ps.setString(1, remarque);
+				ps.setString(2, airport);
+				ResultSet rs = ps.executeQuery();
+				while(rs.next()){
+					returnVal = rs.getInt("numMois");
+				}
+				ps.close();
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			returnVal = 0;
+		}
+		return returnVal;
+	}
+
+	@Override
+	public List<String> listOfThemes(String airport) {
+		
+		List<String> list = new ArrayList<String>();
+		//getting connection
+		Connection c = DBConnexion.getConnection();
+		try {
+			PreparedStatement ps = c
+					.prepareStatement("SELECT distinct(r.`remarque`) FROM reclamation r WHERE nomAeroport=?");
+			ps.setString(1, airport);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				list.add(rs.getString("remarque"));
+			}
+			ps.close();
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public int evolutionsReclamationsParTheme(String airport, String remarque,
+			Date date) {
+
+		int returnVal = 0;
+		//getting a connection
+		Connection c = DBConnexion.getConnection();
+		try {
+			PreparedStatement ps = c.prepareStatement("SELECT count(*) num FROM reclamation WHERE nomAeroport=? AND date=? AND remarque=?");
+			ps.setString(1, airport);
+			ps.setDate(2, date);
+			ps.setString(3, remarque);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				returnVal = rs.getInt("num");
+			}
+			ps.close();
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return returnVal;
 	}
 
 }

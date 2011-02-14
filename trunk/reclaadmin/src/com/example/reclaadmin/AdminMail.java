@@ -28,10 +28,11 @@ public class AdminMail extends VerticalLayout{
 	
 	public AdminMail(ReclaadminApplication application, Panel panel) 
 	{
-		__app = application;
+		__app = application; 
 		
 		panel.setSizeUndefined();
 		panel.setCaption("Email");
+		panel.setIcon(new ThemeResource("icons/actions/message.png"));
 		setSpacing(false);
 		
 		hlayout.setSpacing(true);

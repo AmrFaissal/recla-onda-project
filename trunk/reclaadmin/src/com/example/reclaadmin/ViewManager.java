@@ -8,63 +8,58 @@ import com.vaadin.ui.Panel;
 
 public class ViewManager {
 
-	HashMap<String , Layout> views = new HashMap<String , Layout>();
+	HashMap<String, Layout> views = new HashMap<String, Layout>();
 	Stack<Layout> screenStack = new Stack<Layout>();
 	Panel window;
-	
-	
+
 	/*
 	 * Constructor
+	 * 
+	 * @param window
 	 */
-	public ViewManager(Panel window)
-	{
+	public ViewManager(Panel window) {
 		this.window = window;
 	}
-	
-	public void init()
-	{
-		
+
+	public void init() {
+
 	}
-	
+
 	/*
 	 * Switch current screen to new given screen
+	 * 
+	 * @param viewName, newView
 	 */
-	public void switchScreen(String viewName, Layout newView)
-	{
+	public void switchScreen(String viewName, Layout newView) {
 		Layout view;
-		if (newView != null)
-		{
+		if (newView != null) {
 			view = newView;
 			views.put(viewName, newView);
-		}
-		else {
+		} else {
 			view = views.get("viewname");
 		}
 		window.setContent(view);
 	}
-	
+
 	/*
-	 * Switch to given screen and pushes the current screen to stack
-	 * The pushed screen can be switched back to by calling popScreen() method
+	 * Switch to given screen and pushes the current screen to stack The pushed
+	 * screen can be switched back to by calling popScreen() method
+	 * 
+	 * @param viewName, newView
 	 */
-	public void pushScreen(String viewName, Layout newView)
-	{
-		screenStack.push((Layout)window.getContent());
+	public void pushScreen(String viewName, Layout newView) {
+		screenStack.push((Layout) window.getContent());
 		switchScreen(viewName, newView);
 	}
-	
-	public void popScreen()
-	{
+
+	public void popScreen() {
 		window.setContent(screenStack.pop());
 	}
-	
+
 	/*
 	 * getter for panel 'window'
 	 */
-	public Panel getWindow()
-	{
+	public Panel getWindow() {
 		return window;
 	}
-	
-	
 }

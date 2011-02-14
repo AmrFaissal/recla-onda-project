@@ -34,8 +34,9 @@ public class TableauReclamation extends VerticalLayout {
 		//panel.setHeight("620px");
 		panel.setSizeUndefined();
 		panel.setCaption("Sélectionnez un aéroport");
+		panel.setIcon(new ThemeResource("icons/actions/toggle_log.png"));
 		
-		table = new Table("Tableau de Réclamation");
+		table = new Table("Tableau de Réclamations");
 		table.setVisible(false);
 		rm = new ReclamationModel();
 		_server = new DQSPServerI();
@@ -48,6 +49,7 @@ public class TableauReclamation extends VerticalLayout {
 		
 		airports.setInputPrompt("Aéroport Concerné");
 		airports.setImmediate(true);
+		airports.setNullSelectionAllowed(false);
 		airports.addListener(new Property.ValueChangeListener() {
 			
 			@Override
@@ -61,7 +63,7 @@ public class TableauReclamation extends VerticalLayout {
 				container.addContainerProperty("Descriptif", String.class, null);
 				
 				if (rm.getAirportsReclamations(String.valueOf(airports.getValue())).size() != 0){
-					panel.setCaption("");
+					panel.setCaption("Tableau de Réclamations");
 					//filling out the container
 					for (Reclamation a : rm.getAirportsReclamations(String.valueOf(airports.getValue())))
 					{
