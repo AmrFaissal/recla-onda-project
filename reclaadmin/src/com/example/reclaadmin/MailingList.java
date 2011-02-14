@@ -14,6 +14,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 
 import entities.DBConnexion;
@@ -28,9 +29,11 @@ public class MailingList extends VerticalLayout {
 	public MailingList(ReclaadminApplication application, Panel panel) {
 		__app = application;
 
-		panel.setWidth("635px");
-		panel.setHeight("620px");
-
+		panel.setWidth("625px");
+		
+		panel.setIcon(new ThemeResource("icons/actions/mail_replyall.png"));
+		panel.setCaption("Liste des contacts");
+		
 		setMargin(true);
 
 		table = new Table("Liste des contacts");
@@ -50,7 +53,6 @@ public class MailingList extends VerticalLayout {
 		}
 
 		table.setContainerDataSource(container);
-
 		table.setColumnReorderingAllowed(true);
 		table.setColumnCollapsingAllowed(true);
 		table.setSelectable(true);
@@ -60,6 +62,9 @@ public class MailingList extends VerticalLayout {
 		table.setColumnFooter("Nom", "Total");
 		table.setColumnFooter("Email",
 				String.valueOf(getPassagerMailList().size()));
+		
+		table.setColumnIcon("Nom",new ThemeResource("icons/actions/identity.png"));
+		table.setColumnIcon("Email",new ThemeResource("icons/actions/mail_generic.png"));
 
 		Button send = new Button("Envoyer");
 		send.setIcon(new ThemeResource("icons/actions/mail_replyall.png"));
@@ -68,7 +73,7 @@ public class MailingList extends VerticalLayout {
 			public void buttonClick(ClickEvent event) {
 				// Here code to reply to passengers
 				__app.getMainWindow().showNotification(
-						"Votre Message est délivré avec succés");
+						"Notification","Votre Message est délivré avec succés",Window.Notification.TYPE_TRAY_NOTIFICATION);
 			}
 		});
 

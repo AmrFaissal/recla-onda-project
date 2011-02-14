@@ -57,6 +57,7 @@ public class _DefineActions extends VerticalLayout{
 		
 
 		airports = new ComboBox();
+		airports.setNullSelectionAllowed(false);
 		airports.setIcon(new ThemeResource("icons/actions/identity.png"));
 		for (String s : _server.listOfAirports()) {
 			airports.addItem(s);

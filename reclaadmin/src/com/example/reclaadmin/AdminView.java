@@ -1,6 +1,13 @@
 package com.example.reclaadmin;
 
+import java.net.UnknownHostException;
+
+import server.DQSPServer;
+import server.DQSPServerI;
+
+import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.terminal.ThemeResource;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.MenuBar;
@@ -8,14 +15,17 @@ import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
+import com.vaadin.data.Property;
 
 @SuppressWarnings("serial")
-public class AdminView extends VerticalLayout {
+public class AdminView extends VerticalLayout implements java.io.Serializable{
 
 	ReclaadminApplication __app;
 	CustomLayout custom = new CustomLayout("admin");
 	MenuBar mainmenu = new MenuBar();
-	private Panel centrale;
+	Panel centrale;
+	DQSPServer _server = new DQSPServerI();
 
 	/*
 	 * Constructor
@@ -49,7 +59,7 @@ public class AdminView extends VerticalLayout {
 		MenuBar.MenuItem reclamation = mainmenu.addItem("Tableaux", null);
 		reclamation.setIcon(new ThemeResource(
 				"icons/actions/view_multicolumn.png"));
-		reclamation.addItem("Tableau de Réclamation", new ThemeResource(
+		reclamation.addItem("Tableau de Réclamations", new ThemeResource(
 				"icons/actions/toggle_log.png"), getReclamations);
 		reclamation.addSeparator();
 		reclamation.addItem("Tableau d'analyse", new ThemeResource(
@@ -88,8 +98,12 @@ public class AdminView extends VerticalLayout {
 	private Command _logout = new Command() {
 		@Override
 		public void menuSelected(MenuItem selectedItem) {
-			__app.getViewManager().switchScreen(LoginScreen.class.getName(),
-					new LoginScreen(__app));
+			try {
+				__app.getViewManager().switchScreen(LoginScreen.class.getName(),
+						new LoginScreen(__app));
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
 		}
 	};
 
@@ -105,11 +119,35 @@ public class AdminView extends VerticalLayout {
 
 		@Override
 		public void menuSelected(MenuItem selectedItem) {
-			int returnVal = new PDFGen().generate();
-			if (returnVal == 0) {
-				__app.getMainWindow().showNotification(
-						"Procés Verbal généré avec succés");
+			
+			Window window = new Window("Génération du PV");
+			window.setWidth("350px");
+			window.setHeight("160px");
+			window.center();
+			__app.getMainWindow().addWindow(window);
+			final ComboBox airports = new ComboBox("Choisissez un aéroport");
+			airports.setInputPrompt("Choisissez un aéroport");
+			airports.setImmediate(true);
+			airports.setNullSelectionAllowed(false);
+			airports.setIcon(new ThemeResource("icons/actions/toggle_log.png"));
+			window.addComponent(airports);
+			for(String s : _server.listOfAirports()){
+				airports.addItem(s);
 			}
+			
+			airports.addListener(new Property.ValueChangeListener() {
+				
+				@Override
+				public void valueChange(ValueChangeEvent event) {
+					int returnVal = new PDFGen().generate(String.valueOf(airports.getValue()));
+					if (returnVal == 0){
+						__app.getMainWindow().showNotification("Notification", "Procés Verbal généré avec succès", Window.Notification.TYPE_TRAY_NOTIFICATION);
+					} else {
+						__app.getMainWindow().showNotification("Notification", "Erreur pendant la génération du PV", Window.Notification.TYPE_TRAY_NOTIFICATION);
+					}
+					
+				}
+			});
 		}
 	};
 

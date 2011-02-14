@@ -20,5 +20,11 @@ public interface DQSPServer {
 	public String actionForObservation(String observation);
 
 	public java.util.List<String> listOfAirports();
+	
+	public java.util.List<String> listOfThemes(String airport); 
+	
+	public int numberOfAppearancesPerMonth(String remarque, String airport);
+	
+	public int evolutionsReclamationsParTheme(String airport, String remarque, java.sql.Date date);
 
 }

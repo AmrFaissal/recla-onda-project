@@ -6,26 +6,29 @@ import java.text.SimpleDateFormat;
 import java.util.Random;
 
 import java.util.Calendar;
+
+import org.vaadin.sparklines.Sparklines;
+
 import com.vaadin.addon.timeline.Timeline;
 import com.vaadin.addon.timeline.Timeline.EventButtonClickEvent;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
-import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
 
 @SuppressWarnings("serial")
 public class AnnualTimeLine extends VerticalLayout {
 	
 	ReclaadminApplication __app;
+	Sparklines s;
 	
 	
 	public AnnualTimeLine(ReclaadminApplication application, Panel panel, String title) 
 	{
 		__app = application;
 		
-		panel.setWidth("635px");
-		panel.setHeight("620px");
+		panel.setWidth("660px");
+		panel.setHeight("375px");
 		
 		panel.setCaption("Synthèse de l'année");
 		
@@ -70,7 +73,7 @@ public class AnnualTimeLine extends VerticalLayout {
 		
 		addComponent(timeline);
 		
-		TextField comments = new TextField("Commentaires");
+		/*TextField comments = new TextField("Commentaires");
 		comments.setIcon(new ThemeResource("icons/actions/signature.png"));
 		comments.setRows(10);
 		comments.setWidth("100%");
@@ -78,7 +81,19 @@ public class AnnualTimeLine extends VerticalLayout {
 		
 		Button save = new Button("Enregistrer");
 		addComponent(save);
-		setComponentAlignment(save, "right");
+		setComponentAlignment(save, "right");*/
+		/*s = new Sparklines("Stuff", 0, 0, 50, 100);
+		//s.setStyleName("spark");
+		s.setDescription("Everything turned on");
+		s.setValue("15,26,23,56,35,37,21"); 
+		s.setAverageVisible(true);
+		s.setNormalRangeColor("#444"); 
+		s.setNormalRangeMax(80);
+		s.setNormalRangeMin(60);
+		s.setNormalRangeVisible(true);
+		s.setMaxColor("#f69");
+		s.setMinColor("#6f9");
+		addComponent(s);*/
 	}
 	
 	

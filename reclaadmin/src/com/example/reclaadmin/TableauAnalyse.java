@@ -41,6 +41,7 @@ public class TableauAnalyse extends VerticalLayout {
 		//panel.setHeight("620px");
 		panel.setSizeUndefined();
 		panel.setCaption("Sélectionnez un aéroport");
+		panel.setIcon(new ThemeResource("icons/actions/toggle_log.png"));
 		
 		formatter = new SimpleDateFormat("d/MM/yyyy");
 		table = new Table("Tableau d'analyse - " + formatter.format(new java.util.Date()));
@@ -53,6 +54,7 @@ public class TableauAnalyse extends VerticalLayout {
 		_server = new DQSPServerI();
 		
 		airports = new ComboBox();
+		airports.setNullSelectionAllowed(false);
 		airports.setIcon(new ThemeResource("icons/actions/identity.png"));
 		for (String s : _server.listOfAirports()){
 			airports.addItem(s);
@@ -69,7 +71,7 @@ public class TableauAnalyse extends VerticalLayout {
 			public void valueChange(ValueChangeEvent event) {
 				
 				//filling out the container
-				IndexedContainer container = new IndexedContainer();
+				IndexedContainer container = new IndexedContainer(); 
 				container.addContainerProperty("Service", String.class, null);
 				container.addContainerProperty("Thème", String.class, null);
 				container.addContainerProperty("Nombre de Réclamations", Integer.class, null);
@@ -77,7 +79,7 @@ public class TableauAnalyse extends VerticalLayout {
 				
 				if (am.buildAnalyseTable(String.valueOf(airports.getValue())).size() != 0)
 				{
-					panel.setCaption("");
+					panel.setCaption("Tableau d'analyse");
 					for (AnalyseTable at : am.buildAnalyseTable(String.valueOf(airports.getValue())))
 					{
 						Item item = container.addItem(at);
