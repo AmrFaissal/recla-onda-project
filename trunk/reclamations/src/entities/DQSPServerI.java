@@ -68,7 +68,7 @@ public class DQSPServerI implements DQSPServer {
 	}
 
 	@Override
-	public void addReclamation(int idPassager, Date date, String nomAeroport,
+	public int addReclamation(int idPassager, Date date, String nomAeroport,
 			String terminale, String nomService, String remarque,
 			String descriptif, String theme) {
 
@@ -93,7 +93,7 @@ public class DQSPServerI implements DQSPServer {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		return idPassager;
 	}
 
 	@Override

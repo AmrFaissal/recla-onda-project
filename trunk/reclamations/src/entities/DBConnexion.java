@@ -21,7 +21,7 @@ public class DBConnexion {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DBConnexion.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+    } 
 
     
     
