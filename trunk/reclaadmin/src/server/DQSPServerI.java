@@ -92,7 +92,7 @@ public class DQSPServerI implements DQSPServer, java.io.Serializable {
 			ps.setString(8, theme);
 
 			ps.executeUpdate();
- 
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -196,20 +196,20 @@ public class DQSPServerI implements DQSPServer, java.io.Serializable {
 
 	@Override
 	public int numberOfAppearancesPerMonth(String remarque, String airport) {
-		
+
 		int returnVal = 0;
-		
-		if (!remarque.equals("")){
+
+		if (!remarque.equals("")) {
 			// getting a connection
 			Connection c = DBConnexion.getConnection();
 			try {
-				// preparing the statement 
+				// preparing the statement
 				PreparedStatement ps = c
 						.prepareStatement("SELECT COUNT(DISTINCT(MONTH(r.`date`))) numMois FROM reclamation r WHERE remarque=? AND nomAeroport=?");
 				ps.setString(1, remarque);
 				ps.setString(2, airport);
 				ResultSet rs = ps.executeQuery();
-				while(rs.next()){
+				while (rs.next()) {
 					returnVal = rs.getInt("numMois");
 				}
 				ps.close();
@@ -225,9 +225,9 @@ public class DQSPServerI implements DQSPServer, java.io.Serializable {
 
 	@Override
 	public List<String> listOfThemes(String airport) {
-		
+
 		List<String> list = new ArrayList<String>();
-		//getting connection
+		// getting connection
 		Connection c = DBConnexion.getConnection();
 		try {
 			PreparedStatement ps = c
@@ -251,10 +251,11 @@ public class DQSPServerI implements DQSPServer, java.io.Serializable {
 			Date date) {
 
 		int returnVal = 0;
-		//getting a connection
+		// getting a connection
 		Connection c = DBConnexion.getConnection();
 		try {
-			PreparedStatement ps = c.prepareStatement("SELECT count(*) num FROM reclamation WHERE nomAeroport=? AND date=? AND remarque=?");
+			PreparedStatement ps = c
+					.prepareStatement("SELECT count(*) num FROM reclamation WHERE nomAeroport=? AND date=? AND remarque=?");
 			ps.setString(1, airport);
 			ps.setDate(2, date);
 			ps.setString(3, remarque);
@@ -269,6 +270,96 @@ public class DQSPServerI implements DQSPServer, java.io.Serializable {
 			e.printStackTrace();
 		}
 		return returnVal;
+	}
+
+	/*
+	 * returns the history of the specified airport
+	 * 
+	 * @param airport
+	 * 
+	 * @see server.DQSPServer#listOfYears(java.lang.String)
+	 */
+	@Override
+	public List<Integer> listOfYears() {
+		List<Integer> years = new ArrayList<Integer>();
+
+		// getting a connection
+		Connection con = DBConnexion.getConnection();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT DISTINCT(YEAR(r.`date`)) history FROM reclamation r");
+			while (rs.next()) {
+				years.add(rs.getInt("history"));
+			}
+			// closing
+			stmt.close();
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return years;
+	}
+
+	/*
+	 * returns number of passenger of an airport
+	 * 
+	 * @param airport
+	 * 
+	 * @see server.DQSPServer#numberOfPassengers(java.lang.String)
+	 */
+	@Override
+	public int numberOfPassengers(String airport) {
+		int total = 0;
+
+		// getting a connection
+		Connection con = DBConnexion.getConnection();
+		try {
+			PreparedStatement ps = con
+					.prepareStatement("SELECT COUNT(DISTINCT(r.`idPassager`)) num FROM reclamation r WHERE r.`nomAeroport`=?");
+			ps.setString(1, airport);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				total = rs.getInt("num");
+			}
+			// closing
+			ps.close();
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return total;
+	}
+
+	/*
+	 * returns the number of claims for the specified airport
+	 * 
+	 * @param airport
+	 * 
+	 * @see server.DQSPServer#numberOfClaims(java.lang.String)
+	 */
+	@Override
+	public int numberOfClaims(String airport) {
+		int total = 0;
+
+		// getting a connection
+		Connection con = DBConnexion.getConnection();
+		try {
+			PreparedStatement ps = con
+					.prepareStatement("SELECT COUNT(*) number FROM reclamation r WHERE r.`nomAeroport`=?");
+			ps.setString(1, airport);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				total = rs.getInt("number");
+			}
+			// closing
+			ps.close();
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return total;
 	}
 
 }
