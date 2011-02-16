@@ -30,7 +30,7 @@ public class TableauReclamation extends VerticalLayout {
 		
 		__app = application;
 		
-		//panel.setWidth("635px");
+		//panel.setWidth("635px"); 
 		//panel.setHeight("620px");
 		panel.setSizeUndefined();
 		panel.setCaption("Sélectionnez un aéroport");
