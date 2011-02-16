@@ -11,20 +11,28 @@ public interface DQSPServer {
 			String nomAeroport, String terminale, String nomService,
 			String remarque, String descriptif, String theme);
 
-	public void addAction(String service, String theme, String descriptif, String idAeroport);
-	
+	public void addAction(String service, String theme, String descriptif,
+			String idAeroport);
+
 	public java.util.List<String> listOfObservationsPerAirport(String airport);
-	
+
 	public int updateMyActions(String observations, String action);
-	
+
 	public String actionForObservation(String observation);
 
 	public java.util.List<String> listOfAirports();
-	
-	public java.util.List<String> listOfThemes(String airport); 
-	
+
+	public java.util.List<String> listOfThemes(String airport);
+
+	public java.util.List<Integer> listOfYears();
+
 	public int numberOfAppearancesPerMonth(String remarque, String airport);
-	
-	public int evolutionsReclamationsParTheme(String airport, String remarque, java.sql.Date date);
+
+	public int evolutionsReclamationsParTheme(String airport, String remarque,
+			java.sql.Date date);
+
+	public int numberOfPassengers(String airport);
+
+	public int numberOfClaims(String airport);
 
 }
