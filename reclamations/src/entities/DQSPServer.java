@@ -7,7 +7,7 @@ public interface DQSPServer {
 			String typeReclamateur, String numVol, String prov, String dest,
 			String nationalite);
 
-	public void addReclamation(int idPassager, java.sql.Date date,
+	public int addReclamation(int idPassager, java.sql.Date date,
 			String nomAeroport, String terminale, String nomService,
 			String remarque, String descriptif, String theme);
 

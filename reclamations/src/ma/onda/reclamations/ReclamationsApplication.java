@@ -1,5 +1,7 @@
 package ma.onda.reclamations;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import com.vaadin.Application;
 import com.vaadin.data.util.BeanItem;
@@ -11,21 +13,21 @@ import entities.DQSPServer;
 import entities.DQSPServerI;
 
 @SuppressWarnings("serial")
-public class ReclamationsApplication extends Application {
+public class ReclamationsApplication extends Application implements java.io.Serializable{
 
 	// main window
 	Window main;
 
 	// Different layouts
-	static CustomLayout custom = new CustomLayout("client");
-	static VerticalLayout l1 = new VerticalLayout();
-	static VerticalLayout l2 = new VerticalLayout();
-	static VerticalLayout l3 = new VerticalLayout();
-	static VerticalLayout l4 = new VerticalLayout();
-	static HorizontalLayout hlayout = new HorizontalLayout();
-	static HorizontalLayout hlayout1 = new HorizontalLayout();
-	static HorizontalLayout hlayout2 = new HorizontalLayout();
-	static HorizontalLayout hlayout3 = new HorizontalLayout();
+	CustomLayout custom = new CustomLayout("client");
+	VerticalLayout l1 = new VerticalLayout();
+	VerticalLayout l2 = new VerticalLayout();
+	VerticalLayout l3 = new VerticalLayout();
+	VerticalLayout l4 = new VerticalLayout();
+	HorizontalLayout hlayout = new HorizontalLayout();
+	HorizontalLayout hlayout1 = new HorizontalLayout();
+	HorizontalLayout hlayout2 = new HorizontalLayout();
+	HorizontalLayout hlayout3 = new HorizontalLayout();
 
 	// icons for tabs
 	static final ThemeResource icon1 = new ThemeResource(
@@ -36,6 +38,9 @@ public class ReclamationsApplication extends Application {
 			"icons/actions/ledred.png");
 	static final ThemeResource icon4 = new ThemeResource(
 			"icons/actions/ledblue.png");
+	
+	// Generate a random ID
+	//int id = IdGenerator.generateID();
 
 	// main tab sheet
 	TabSheet tabSheet = new TabSheet();
@@ -51,12 +56,11 @@ public class ReclamationsApplication extends Application {
 	Form form4 = new Form();
 	Form form5 = new Form();
 
-	// Generate a random ID
-	int id = IdGenerator.generateID();
-
 	// Instances of server implementation
 	DQSPServer _serverI = new DQSPServerI();
 	DQSPServer __serverI = new DQSPServerI();
+	
+	URL url;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -69,6 +73,7 @@ public class ReclamationsApplication extends Application {
 		tabSheet.setImmediate(true);
 		tabSheet.setHeight("460px");
 		tabSheet.setWidth("700px");
+		
 
 		l1.setMargin(true);
 		l1.setSpacing(true);
@@ -190,6 +195,7 @@ public class ReclamationsApplication extends Application {
 		suggest.addItem("Les moyens de transport");
 		suggest.addItem("Passerelles");
 		suggest.addItem("Horloges");
+		suggest.addItem("Papier");
 		suggest.addItem("Apparence/Visiblité");
 		suggest.addItem("Eclairages");
 		suggest.addItem("Salles d'embarquement");
@@ -218,15 +224,23 @@ public class ReclamationsApplication extends Application {
 		tabSheet.addTab(l2, "Etape 2", icon2);
 		tabSheet.addTab(l3, "Etape 3", icon3);
 		tabSheet.addTab(l4, "Etape 4", icon4);
+		
+		try {
+			url = new URL("http://localhost:8080/reclamations?restartApplication");
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		submitButton.addListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
+				
 				// adding the reclamation
 				if (!form1.getField("email").getValue().equals("")) {
 					// adding the passenger
 					__serverI
-							.addPassager(id, (String) form1.getField("gender")
+							.addPassager(IdGenerator.generateID(), (String) form1.getField("gender")
 									.getValue(), form1.getField("nom")
 									.getValue().toString(),
 									form1.getField("email").getValue()
@@ -241,17 +255,17 @@ public class ReclamationsApplication extends Application {
 											.getValue().toString(), form2
 											.getField("nVol").getValue()
 											.toString(),
-									form2.getField("provenance").getValue()
+									form2.getField("provenance").getValue() 
 											.toString(),
-									form2.getField("destination").getValue()
+									form2.getField("destination").getValue() 
 											.toString(),
 									form1.getField("nationalite").getValue()
 											.toString());
 				}
 
 				if (!cb.getValue().toString().equals("")) {
-					_serverI.addReclamation(
-							id,
+					_serverI.addReclamation( 
+							IdGenerator.generateID(),
 							new java.sql.Date(((java.util.Date) form2.getField(
 									"date").getValue()).getTime()), cb
 									.getValue().toString(), cb1.getValue()
@@ -265,10 +279,11 @@ public class ReclamationsApplication extends Application {
 							.getValue().toString()), suggest.getValue()
 							.toString(), String.valueOf(details.getValue()), cb
 							.getValue().toString());
-
+				
 				} else {
 					cb.setRequired(true);
-				}
+				}	
+				main.getApplication().setLogoutURL(url.toString());
 				main.getApplication().close();
 			}
 		});

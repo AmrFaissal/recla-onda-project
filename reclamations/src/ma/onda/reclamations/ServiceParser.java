@@ -49,6 +49,10 @@ public class ServiceParser {
 		if (zone.equals("Comptoir d'informations touristiques")) {
 			service = "ONDA";
 		}
+		
+		if (zone.equals("Parkings")){
+			service = "ONDA";
+		}
 
 		return service;
 	}
