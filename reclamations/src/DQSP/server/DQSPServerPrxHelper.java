@@ -46,7 +46,7 @@ public final class DQSPServerPrxHelper extends Ice.ObjectPrxHelperBase implement
             }
             catch(IceInternal.LocalExceptionWrapper __ex)
             {
-                __handleExceptionWrapper(__delBase, __ex);
+                __handleExceptionWrapper(__delBase, __ex, null);
             }
             catch(Ice.LocalException __ex)
             {
@@ -88,7 +88,7 @@ public final class DQSPServerPrxHelper extends Ice.ObjectPrxHelperBase implement
             }
             catch(IceInternal.LocalExceptionWrapper __ex)
             {
-                __handleExceptionWrapper(__delBase, __ex);
+                __handleExceptionWrapper(__delBase, __ex, null);
             }
             catch(Ice.LocalException __ex)
             {
@@ -130,7 +130,7 @@ public final class DQSPServerPrxHelper extends Ice.ObjectPrxHelperBase implement
             }
             catch(IceInternal.LocalExceptionWrapper __ex)
             {
-                __handleExceptionWrapper(__delBase, __ex);
+                __handleExceptionWrapper(__delBase, __ex, null);
             }
             catch(Ice.LocalException __ex)
             {
@@ -172,7 +172,7 @@ public final class DQSPServerPrxHelper extends Ice.ObjectPrxHelperBase implement
             }
             catch(IceInternal.LocalExceptionWrapper __ex)
             {
-                __handleExceptionWrapper(__delBase, __ex);
+                __handleExceptionWrapper(__delBase, __ex, null);
             }
             catch(Ice.LocalException __ex)
             {
@@ -214,7 +214,7 @@ public final class DQSPServerPrxHelper extends Ice.ObjectPrxHelperBase implement
             }
             catch(IceInternal.LocalExceptionWrapper __ex)
             {
-                __handleExceptionWrapper(__delBase, __ex);
+                __handleExceptionWrapper(__delBase, __ex, null);
             }
             catch(Ice.LocalException __ex)
             {
@@ -256,7 +256,7 @@ public final class DQSPServerPrxHelper extends Ice.ObjectPrxHelperBase implement
             }
             catch(IceInternal.LocalExceptionWrapper __ex)
             {
-                __handleExceptionWrapper(__delBase, __ex);
+                __handleExceptionWrapper(__delBase, __ex, null);
             }
             catch(Ice.LocalException __ex)
             {
@@ -298,7 +298,7 @@ public final class DQSPServerPrxHelper extends Ice.ObjectPrxHelperBase implement
             }
             catch(IceInternal.LocalExceptionWrapper __ex)
             {
-                __handleExceptionWrapper(__delBase, __ex);
+                __handleExceptionWrapper(__delBase, __ex, null);
             }
             catch(Ice.LocalException __ex)
             {
@@ -340,7 +340,7 @@ public final class DQSPServerPrxHelper extends Ice.ObjectPrxHelperBase implement
             }
             catch(IceInternal.LocalExceptionWrapper __ex)
             {
-                __handleExceptionWrapper(__delBase, __ex);
+                __handleExceptionWrapper(__delBase, __ex, null);
             }
             catch(Ice.LocalException __ex)
             {
@@ -382,7 +382,7 @@ public final class DQSPServerPrxHelper extends Ice.ObjectPrxHelperBase implement
             }
             catch(IceInternal.LocalExceptionWrapper __ex)
             {
-                __handleExceptionWrapper(__delBase, __ex);
+                __handleExceptionWrapper(__delBase, __ex, null);
             }
             catch(Ice.LocalException __ex)
             {
