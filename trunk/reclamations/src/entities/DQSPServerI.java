@@ -15,7 +15,7 @@ public class DQSPServerI implements DQSPServer {
 	public void addPassager(int idPassager, String sex, String nom,
 			String mail, String adresse, String codePostale, String phone,
 			String typeReclamateur, String numVol, String prov, String dest,
-			String nationalite) {
+			String nationalite, String idAeroport) {
 
 		// getting a connection
 		Connection c = DBConnexion.getConnection();
@@ -23,7 +23,7 @@ public class DQSPServerI implements DQSPServer {
 		try {
 			// preparing the statement
 			PreparedStatement ps = c
-					.prepareStatement("INSERT INTO passager VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+					.prepareStatement("INSERT INTO passager VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			ps.setInt(1, idPassager);
 			ps.setString(2, sex);
 			ps.setString(3, nom);
@@ -36,7 +36,8 @@ public class DQSPServerI implements DQSPServer {
 			ps.setString(10, prov);
 			ps.setString(11, dest);
 			ps.setString(12, nationalite);
-
+			ps.setString(13, idAeroport);
+			
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
@@ -70,7 +71,7 @@ public class DQSPServerI implements DQSPServer {
 	@Override
 	public int addReclamation(int idPassager, Date date, String nomAeroport,
 			String terminale, String nomService, String remarque,
-			String descriptif, String theme) {
+			String descriptif, String theme, String typeReclamateur) {
 
 		// getting a connection
 		Connection c = DBConnexion.getConnection();
@@ -78,7 +79,7 @@ public class DQSPServerI implements DQSPServer {
 		try {
 			// preparing the statement
 			PreparedStatement ps = c
-					.prepareStatement("INSERT INTO reclamation VALUES (null,?,?,?,?,?,?,?,?)");
+					.prepareStatement("INSERT INTO reclamation VALUES (null,?,?,?,?,?,?,?,?,?)");
 			ps.setInt(1, idPassager);
 			ps.setDate(2, date);
 			ps.setString(3, nomAeroport);
@@ -87,6 +88,7 @@ public class DQSPServerI implements DQSPServer {
 			ps.setString(6, remarque);
 			ps.setString(7, descriptif);
 			ps.setString(8, theme);
+			ps.setString(9, typeReclamateur);
 
 			ps.executeUpdate();
 
