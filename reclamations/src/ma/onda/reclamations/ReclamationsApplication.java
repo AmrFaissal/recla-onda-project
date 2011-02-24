@@ -13,7 +13,8 @@ import entities.DQSPServer;
 import entities.DQSPServerI;
 
 @SuppressWarnings("serial")
-public class ReclamationsApplication extends Application implements java.io.Serializable{
+public class ReclamationsApplication extends Application implements
+		java.io.Serializable {
 
 	// main window
 	Window main;
@@ -38,9 +39,6 @@ public class ReclamationsApplication extends Application implements java.io.Seri
 			"icons/actions/ledred.png");
 	static final ThemeResource icon4 = new ThemeResource(
 			"icons/actions/ledblue.png");
-	
-	// Generate a random ID
-	//int id = IdGenerator.generateID();
 
 	// main tab sheet
 	TabSheet tabSheet = new TabSheet();
@@ -59,7 +57,8 @@ public class ReclamationsApplication extends Application implements java.io.Seri
 	// Instances of server implementation
 	DQSPServer _serverI = new DQSPServerI();
 	DQSPServer __serverI = new DQSPServerI();
-	
+
+	// instance for the logout url
 	URL url;
 
 	@SuppressWarnings("deprecation")
@@ -73,8 +72,8 @@ public class ReclamationsApplication extends Application implements java.io.Seri
 		tabSheet.setImmediate(true);
 		tabSheet.setHeight("460px");
 		tabSheet.setWidth("700px");
-		
 
+		l1.removeAllComponents();
 		l1.setMargin(true);
 		l1.setSpacing(true);
 
@@ -89,6 +88,7 @@ public class ReclamationsApplication extends Application implements java.io.Seri
 
 		Button website = new Button("www.onda.ma");
 		website.setStyleName(Button.STYLE_LINK);
+		hlayout.removeAllComponents();
 		hlayout.setSpacing(true);
 		hlayout.addComponent(new Label(
 				"Pour tout complément d'informations, veuillez visiter notre site web: "));
@@ -97,6 +97,7 @@ public class ReclamationsApplication extends Application implements java.io.Seri
 		l1.addComponent(new Label(""));
 		l1.addComponent(hlayout);
 
+		l2.removeAllComponents();
 		l2.setMargin(true);
 		l2.setSpacing(true);
 		BeanItem<GPassager> item1 = new BeanItem<GPassager>(gpassager);
@@ -109,6 +110,7 @@ public class ReclamationsApplication extends Application implements java.io.Seri
 		l2.addComponent(form2);
 		Button website1 = new Button("www.onda.ma");
 		website1.setStyleName(Button.STYLE_LINK);
+		hlayout1.removeAllComponents();
 		hlayout1.setSpacing(true);
 		hlayout1.addComponent(new Label(
 				"Pour tout complément d'informations, veuillez visiter notre site web: "));
@@ -116,6 +118,7 @@ public class ReclamationsApplication extends Application implements java.io.Seri
 		l2.addComponent(new Label(""));
 		l2.addComponent(hlayout1);
 
+		l3.removeAllComponents();
 		l3.setMargin(true);
 		l3.addComponent(form3);
 		form3.setCaption("N'hésitez pas à donner plus de détails");
@@ -124,21 +127,23 @@ public class ReclamationsApplication extends Application implements java.io.Seri
 		form3.addField("terminal",
 				new ComboBox("2. Précisez, le cas échéant: "));
 
-		final ComboBox cb = (ComboBox) form3.getField("airport");
-		cb.setInputPrompt("Aéroport");
+		final ComboBox airports = (ComboBox) form3.getField("airport");
+		airports.setInputPrompt("Aéroport");
+		airports.setNullSelectionAllowed(false);
 		for (String s : __serverI.listOfAirports()) {
-			cb.addItem(s);
+			airports.addItem(s);
 		}
 
-		final ComboBox cb1 = (ComboBox) form3.getField("terminal");
-		cb1.setInputPrompt("Terminale");
-		cb1.addItem("Terminale 1");
-		cb1.addItem("Terminale 2");
-		cb1.addItem("Terminale 3");
+		final ComboBox terminales = (ComboBox) form3.getField("terminal");
+		terminales.setInputPrompt("Terminale");
+		terminales.addItem("Terminale 1");
+		terminales.addItem("Terminale 2");
+		terminales.addItem("Terminale 3");
 
 		form4.setCaption("Quelle est la zone concernée par votre remarque ?");
 		l3.addComponent(form4);
 
+		hlayout2.removeAllComponents();
 		hlayout2.setMargin(true);
 		hlayout2.setSpacing(true);
 
@@ -202,11 +207,13 @@ public class ReclamationsApplication extends Application implements java.io.Seri
 		suggest.addItem("Salles de débarquement");
 		suggest.addItem("Espaces Verts");
 
+		hlayout3.removeAllComponents();
 		hlayout3.setMargin(true);
 		hlayout3.setSpacing(true);
 		hlayout3.addComponent(suggest);
 		l3.addComponent(hlayout3);
 
+		l4.removeAllComponents();
 		l4.setMargin(true);
 		l4.setSpacing(true);
 		Form desc = new Form();
@@ -224,9 +231,10 @@ public class ReclamationsApplication extends Application implements java.io.Seri
 		tabSheet.addTab(l2, "Etape 2", icon2);
 		tabSheet.addTab(l3, "Etape 3", icon3);
 		tabSheet.addTab(l4, "Etape 4", icon4);
-		
+
 		try {
-			url = new URL("http://localhost:8080/reclamations?restartApplication");
+			url = new URL(
+					"http://localhost:8080/reclamations?restartApplication");
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -235,54 +243,50 @@ public class ReclamationsApplication extends Application implements java.io.Seri
 		submitButton.addListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				
+
 				// adding the reclamation
 				if (!form1.getField("email").getValue().equals("")) {
 					// adding the passenger
-					__serverI
-							.addPassager(IdGenerator.generateID(), (String) form1.getField("gender")
-									.getValue(), form1.getField("nom")
-									.getValue().toString(),
-									form1.getField("email").getValue()
-											.toString(),
-									form1.getField("adresse").getValue()
-											.toString(),
-									form1.getField("codePostale").getValue()
-											.toString(), form1
-											.getField("phone").getValue()
-											.toString(),
-									form2.getField("typeReclamateur")
-											.getValue().toString(), form2
-											.getField("nVol").getValue()
-											.toString(),
-									form2.getField("provenance").getValue() 
-											.toString(),
-									form2.getField("destination").getValue() 
-											.toString(),
-									form1.getField("nationalite").getValue()
-											.toString());
+					__serverI.addPassager(
+							IdGenerator.generateID(),
+							(String) form1.getField("gender").getValue(),
+							form1.getField("nom").getValue().toString(),
+							form1.getField("email").getValue().toString(),
+							form1.getField("adresse").getValue().toString(),
+							form1.getField("codePostale").getValue().toString(),
+							form1.getField("phone").getValue().toString(),
+							form2.getField("typeReclamateur").getValue()
+									.toString(),
+							form2.getField("nVol").getValue().toString(),
+							form2.getField("provenance").getValue().toString(),
+							form2.getField("destination").getValue().toString(),
+							form1.getField("nationalite").getValue().toString(),
+							String.valueOf(airports.getValue()));
 				}
 
-				if (!cb.getValue().toString().equals("")) {
-					_serverI.addReclamation( 
+				if (!airports.getValue().toString().equals("")) {
+					_serverI.addReclamation(
 							IdGenerator.generateID(),
 							new java.sql.Date(((java.util.Date) form2.getField(
-									"date").getValue()).getTime()), cb
-									.getValue().toString(), cb1.getValue()
-									.toString(), new ServiceParser()
+									"date").getValue()).getTime()), airports
+									.getValue().toString(), terminales
+									.getValue().toString(), new ServiceParser()
 									.parseService(zones.getValue().toString()),
 							suggest.getValue().toString(), String
 									.valueOf(details.getValue()), zones
-									.getValue().toString());
+									.getValue().toString(), String
+									.valueOf(form2.getField("typeReclamateur")
+											.getValue()));
 
 					__serverI.addAction(new ServiceParser().parseService(zones
 							.getValue().toString()), suggest.getValue()
-							.toString(), String.valueOf(details.getValue()), cb
-							.getValue().toString());
-				
+							.toString(), String.valueOf(details.getValue()),
+							airports.getValue().toString());
+
 				} else {
-					cb.setRequired(true);
-				}	
+					airports.setRequired(true);
+				}
+
 				main.getApplication().setLogoutURL(url.toString());
 				main.getApplication().close();
 			}
