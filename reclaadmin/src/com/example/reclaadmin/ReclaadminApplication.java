@@ -8,8 +8,8 @@ import com.vaadin.ui.*;
 @SuppressWarnings("serial")
 public class ReclaadminApplication extends Application {
 
-	private Window mainwindow;
-	private ViewManager viewManager;
+	Window mainwindow;
+	ViewManager viewManager;
 
 	@Override
 	public void init() {
@@ -17,7 +17,7 @@ public class ReclaadminApplication extends Application {
 		mainwindow = new Window("Admin");
 		setMainWindow(mainwindow);
 		setTheme("reindeer");
-
+		
 		viewManager = new ViewManager(mainwindow);
 		try {
 			viewManager.switchScreen(LoginScreen.class.getName(),
