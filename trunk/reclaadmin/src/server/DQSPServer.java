@@ -23,6 +23,8 @@ public interface DQSPServer {
 	public java.util.List<String> listOfAirports();
 
 	public java.util.List<String> listOfThemes(String airport);
+	
+	public java.util.List<String> listOfThemesInClaims();
 
 	public java.util.List<Integer> listOfYears();
 

@@ -34,6 +34,7 @@ import entities.DBConnexion;
 public class TableauActions extends VerticalLayout{
 	
 	SimpleDateFormat formatter;
+	//Table table;
 	Table table;
 	Button send;
 	ComboBox airports;

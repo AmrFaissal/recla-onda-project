@@ -82,6 +82,7 @@ public class AnnualTimeLine extends VerticalLayout {
 		Button save = new Button("Enregistrer");
 		addComponent(save);
 		setComponentAlignment(save, "right");*/
+	
 		/*s = new Sparklines("Stuff", 0, 0, 50, 100);
 		//s.setStyleName("spark");
 		s.setDescription("Everything turned on");

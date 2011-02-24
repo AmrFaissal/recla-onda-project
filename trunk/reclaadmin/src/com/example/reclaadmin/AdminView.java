@@ -1,10 +1,12 @@
 package com.example.reclaadmin;
 
 import java.net.UnknownHostException;
-
 import server.DQSPServer;
 import server.DQSPServerI;
 
+import com.googlecode.mcvaadin.McEvent;
+import com.googlecode.mcvaadin.McListener;
+import com.googlecode.mcvaadin.helpers.UserMessages;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.ComboBox;
@@ -19,7 +21,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.data.Property;
 
 @SuppressWarnings("serial")
-public class AdminView extends VerticalLayout implements java.io.Serializable{
+public class AdminView extends VerticalLayout implements java.io.Serializable {
 
 	ReclaadminApplication __app;
 	CustomLayout custom = new CustomLayout("admin");
@@ -98,12 +100,27 @@ public class AdminView extends VerticalLayout implements java.io.Serializable{
 	private Command _logout = new Command() {
 		@Override
 		public void menuSelected(MenuItem selectedItem) {
-			try {
-				__app.getViewManager().switchScreen(LoginScreen.class.getName(),
-						new LoginScreen(__app));
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-			}
+
+			// custom user message__confirmation dialog
+			UserMessages um = new UserMessages(__app.getMainWindow());
+			um.confirm("Confirmation",
+					"Vous voulez vraiment quitter la session ?", "Oui", "Non",
+					new McListener() {
+
+						@Override
+						public void exec(McEvent e) throws Exception {
+							// message confirmed
+							if (e.isConfirmed()) {
+								try {
+									__app.getViewManager().switchScreen(
+											LoginScreen.class.getName(),
+											new LoginScreen(__app));
+								} catch (UnknownHostException ex) {
+									ex.printStackTrace();
+								}
+							}
+						}
+					});
 		}
 	};
 
@@ -119,7 +136,7 @@ public class AdminView extends VerticalLayout implements java.io.Serializable{
 
 		@Override
 		public void menuSelected(MenuItem selectedItem) {
-			
+
 			Window window = new Window("Génération du PV");
 			window.setWidth("350px");
 			window.setHeight("160px");
@@ -131,21 +148,26 @@ public class AdminView extends VerticalLayout implements java.io.Serializable{
 			airports.setNullSelectionAllowed(false);
 			airports.setIcon(new ThemeResource("icons/actions/toggle_log.png"));
 			window.addComponent(airports);
-			for(String s : _server.listOfAirports()){
+			for (String s : _server.listOfAirports()) {
 				airports.addItem(s);
 			}
-			
+
 			airports.addListener(new Property.ValueChangeListener() {
-				
+
 				@Override
 				public void valueChange(ValueChangeEvent event) {
-					int returnVal = new PDFGen().generate(String.valueOf(airports.getValue()));
-					if (returnVal == 0){
-						__app.getMainWindow().showNotification("Notification", "Procés Verbal généré avec succès", Window.Notification.TYPE_TRAY_NOTIFICATION);
+					int returnVal = new PDFGen().generate(String
+							.valueOf(airports.getValue()));
+					if (returnVal == 0) {
+						__app.getMainWindow().showNotification("Notification",
+								"Procés Verbal généré avec succès",
+								Window.Notification.TYPE_TRAY_NOTIFICATION);
 					} else {
-						__app.getMainWindow().showNotification("Notification", "Erreur pendant la génération du PV", Window.Notification.TYPE_TRAY_NOTIFICATION);
+						__app.getMainWindow().showNotification("Notification",
+								"Erreur pendant la génération du PV",
+								Window.Notification.TYPE_TRAY_NOTIFICATION);
 					}
-					
+
 				}
 			});
 		}

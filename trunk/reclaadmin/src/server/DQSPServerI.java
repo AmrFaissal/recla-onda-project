@@ -315,7 +315,7 @@ public class DQSPServerI implements DQSPServer, java.io.Serializable {
 		Connection con = DBConnexion.getConnection();
 		try {
 			PreparedStatement ps = con
-					.prepareStatement("SELECT COUNT(DISTINCT(r.`idPassager`)) num FROM reclamation r WHERE r.`nomAeroport`=?");
+					.prepareStatement("SELECT COUNT(*) num FROM passager p WHERE p.`idAeroport`=? AND  p.`typeReclameur`='Passager'");
 			ps.setString(1, airport);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -360,6 +360,33 @@ public class DQSPServerI implements DQSPServer, java.io.Serializable {
 		}
 
 		return total;
+	}
+
+	/*
+	 * returns a list of themes that were declared in claims for each airport
+	 * @param airport
+	 * @see server.DQSPServer#listOfThemesInClaims(java.lang.String)
+	 */
+	@Override
+	public List<String> listOfThemesInClaims() {
+		java.util.List<String> list = new java.util.ArrayList<String>();
+
+		// getting a connection
+		Connection con = DBConnexion.getConnection();
+		try {
+			Statement ps = con.createStatement();
+			ResultSet rs = ps.executeQuery("SELECT r.`remarque` FROM reclamation r GROUP BY r.`remarque`");
+			while (rs.next()) {
+				list.add(rs.getString("remarque"));
+			}
+			// closing
+			ps.close();
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		
+		return list;
 	}
 
 }
