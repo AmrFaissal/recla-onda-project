@@ -67,6 +67,8 @@ public class _DefineActions extends VerticalLayout{
 		observations.setVisible(false);
 		observations.setIcon(new ThemeResource("icons/actions/2downarrow.png"));
 		observations.setImmediate(true);
+		observations.setNullSelectionAllowed(false);
+		observations.setSizeFull();
 		observations.setInputPrompt("Sélectionnez une réclamation");
 
 		airports.setInputPrompt("Aéroport Concerné");
@@ -76,6 +78,7 @@ public class _DefineActions extends VerticalLayout{
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				
+				observations.removeAllItems();
 				if (_server.listOfObservationsPerAirport(String.valueOf(airports.getValue())).size() != 0) {
 					panel.setCaption("Sélectionnez une réclamation");
 					observations.setVisible(true);
@@ -101,13 +104,13 @@ public class _DefineActions extends VerticalLayout{
 			
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				actions.setVisible(!actions.isVisible());
+				actions.setVisible(true);
 				//set the action(s) for each observation
 				if (actions.isReadOnly() == false){
 					actions.setValue(_server.actionForObservation(String.valueOf(observations.getValue())));
-					hlayout.setVisible(!hlayout.isVisible());
+					hlayout.setVisible(true);
 				} else {
-					hlayout.setVisible(!hlayout.isVisible());
+					hlayout.setVisible(false);
 				}
 			}
 		});
