@@ -244,11 +244,12 @@ public class ReclamationsApplication extends Application implements
 			@Override
 			public void buttonClick(ClickEvent event) {
 
+				int id = (int) (Math.random()*10000);
 				// adding the reclamation
 				if (!form1.getField("email").getValue().equals("")) {
 					// adding the passenger
 					__serverI.addPassager(
-							IdGenerator.generateID(),
+							id,
 							(String) form1.getField("gender").getValue(),
 							form1.getField("nom").getValue().toString(),
 							form1.getField("email").getValue().toString(),
@@ -266,7 +267,7 @@ public class ReclamationsApplication extends Application implements
 
 				if (!airports.getValue().toString().equals("")) {
 					_serverI.addReclamation(
-							IdGenerator.generateID(),
+							id,
 							new java.sql.Date(((java.util.Date) form2.getField(
 									"date").getValue()).getTime()), airports
 									.getValue().toString(), terminales
