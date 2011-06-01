@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
@@ -805,6 +807,12 @@ public class TableauBord extends VerticalLayout {
 				map.setSizeFull();
 				map.setImmediate(true);
 				__map = getMap();
+				if (__map == null) {
+					__app.getMainWindow().showNotification("Google Map",
+							"Connection au serveur réfusée",
+							Window.Notification.TYPE_TRAY_NOTIFICATION);
+					return;
+				}
 				mapLayout.removeAllComponents();
 				mapLayout.addComponent(__map);
 				mapLayout.setComponentAlignment(__map, Alignment.MIDDLE_CENTER);
@@ -819,117 +827,149 @@ public class TableauBord extends VerticalLayout {
 	}
 
 	/*
+	 * Checks if an Internet connection can be established
+	 * 
+	 * @param null
+	 */
+	boolean isServerReacheable() {
+		InetAddress inet = null;
+		try {
+			inet = InetAddress.getByName("maps.google.com");
+			if (inet == null) {
+				return false;
+			}
+		} catch (UnknownHostException e) {
+			return false;
+		}
+		return true;
+	}
+
+	/*
 	 * builds the Map
 	 * 
 	 * @param NULL
 	 */
 	GoogleMap getMap() {
-		GoogleMap googleMap = new GoogleMap(__app, new Point2D.Double(
-				-9.546196, 30.380894), 6);
-		googleMap.setWidth("1000px");
-		googleMap.setHeight("730px");
-		// googleMap.setSizeFull();
-		googleMap.setImmediate(true);
 
-		casablanca = new BasicMarker(1L, new Point2D.Double(-7.589722,
-				33.367222), "Aéroport international de Mohamed V");
-		casablanca.setDraggable(false);
-		casablanca.setInfoWindowContent(null,
-				createInfoWindow(casablanca.getTitle()));
+		GoogleMap googleMap = null;
 
-		rabat = new BasicMarker(2L, new Point2D.Double(-6.750000, 34.050000),
-				"Aéroport de Rabat/Salé");
-		rabat.setDraggable(false);
-		rabat.setInfoWindowContent(null, createInfoWindow(rabat.getTitle()));
+		// verify is there an Internet connection
+		if (!isServerReacheable()) {
+			return null;
+		} else {
 
-		guelmimAirBase = new BasicMarker(3L, new Point2D.Double(-10.052284,
-				29.025658), "Guelmim Air Base");
-		guelmimAirBase.setDraggable(false);
-		guelmimAirBase.setInfoWindowContent(null,
-				createInfoWindow(guelmimAirBase.getTitle()));
+			googleMap = new GoogleMap(__app, new Point2D.Double(-9.546196,
+					30.380894), 6);
 
-		agadir = new BasicMarker(4L, new Point2D.Double(-9.546196, 30.380894),
-				"AGADIR Al Massira");
-		agadir.setDraggable(false);
-		agadir.setInfoWindowContent(null, createInfoWindow(agadir.getTitle()));
+			googleMap.setWidth("1000px");
+			googleMap.setHeight("730px");
+			// googleMap.setSizeFull();
+			googleMap.setImmediate(true);
 
-		oujda = new BasicMarker(5L, new Point2D.Double(-1.925556, 34.786111),
-				"Aéroport Angads");
-		oujda.setDraggable(false);
-		oujda.setInfoWindowContent(null, createInfoWindow(oujda.getTitle()));
+			casablanca = new BasicMarker(1L, new Point2D.Double(-7.589722,
+					33.367222), "Aéroport international de Mohamed V");
+			casablanca.setDraggable(false);
+			casablanca.setInfoWindowContent(null,
+					createInfoWindow(casablanca.getTitle()));
 
-		fes = new BasicMarker(6L, new Point2D.Double(-4.979167, 33.927222),
-				"Aéroport de Saiss");
-		fes.setDraggable(false);
-		fes.setInfoWindowContent(null, createInfoWindow(fes.getTitle()));
+			rabat = new BasicMarker(2L,
+					new Point2D.Double(-6.750000, 34.050000),
+					"Aéroport de Rabat/Salé");
+			rabat.setDraggable(false);
+			rabat.setInfoWindowContent(null, createInfoWindow(rabat.getTitle()));
 
-		marrakech = new BasicMarker(7L,
-				new Point2D.Double(-8.036284, 31.606975),
-				"Aéroport international de Menara");
-		marrakech.setDraggable(false);
-		marrakech.setInfoWindowContent(null,
-				createInfoWindow(marrakech.getTitle()));
+			guelmimAirBase = new BasicMarker(3L, new Point2D.Double(-10.052284,
+					29.025658), "Guelmim Air Base");
+			guelmimAirBase.setDraggable(false);
+			guelmimAirBase.setInfoWindowContent(null,
+					createInfoWindow(guelmimAirBase.getTitle()));
 
-		tanger = new BasicMarker(8L, new Point2D.Double(-5.922038, 35.729202),
-				"Aéroport international Ibn Batouta");
-		tanger.setDraggable(false);
-		tanger.setInfoWindowContent(null, createInfoWindow(tanger.getTitle()));
+			agadir = new BasicMarker(4L, new Point2D.Double(-9.546196,
+					30.380894), "AGADIR Al Massira");
+			agadir.setDraggable(false);
+			agadir.setInfoWindowContent(null,
+					createInfoWindow(agadir.getTitle()));
 
-		hoceima = new BasicMarker(9L, new Point2D.Double(-3.839891, 35.179557),
-				"Aéroport Idrissi Cherif");
-		hoceima.setDraggable(false);
-		hoceima.setInfoWindowContent(null, createInfoWindow(hoceima.getTitle()));
+			oujda = new BasicMarker(5L,
+					new Point2D.Double(-1.925556, 34.786111), "Aéroport Angads");
+			oujda.setDraggable(false);
+			oujda.setInfoWindowContent(null, createInfoWindow(oujda.getTitle()));
 
-		errachidia = new BasicMarker(10L, new Point2D.Double(-4.399053,
-				31.947011), "Aéroport de Moulay Ali Cherif");
-		errachidia.setDraggable(false);
-		errachidia.setInfoWindowContent(null,
-				createInfoWindow(errachidia.getTitle()));
+			fes = new BasicMarker(6L, new Point2D.Double(-4.979167, 33.927222),
+					"Aéroport de Saiss");
+			fes.setDraggable(false);
+			fes.setInfoWindowContent(null, createInfoWindow(fes.getTitle()));
 
-		tetouan = new BasicMarker(11L,
-				new Point2D.Double(-5.316667, 35.583332),
-				"Aéroport de Sania Ramel");
-		tetouan.setDraggable(false);
-		tetouan.setInfoWindowContent(null, createInfoWindow(tetouan.getTitle()));
+			marrakech = new BasicMarker(7L, new Point2D.Double(-8.036284,
+					31.606975), "Aéroport international de Menara");
+			marrakech.setDraggable(false);
+			marrakech.setInfoWindowContent(null,
+					createInfoWindow(marrakech.getTitle()));
 
-		zate = new BasicMarker(12L, new Point2D.Double(-6.909488, 30.939036),
-				"Aéroport Ouarzazate");
-		zate.setDraggable(false);
-		zate.setInfoWindowContent(null, createInfoWindow(zate.getTitle()));
+			tanger = new BasicMarker(8L, new Point2D.Double(-5.922038,
+					35.729202), "Aéroport international Ibn Batouta");
+			tanger.setDraggable(false);
+			tanger.setInfoWindowContent(null,
+					createInfoWindow(tanger.getTitle()));
 
-		nador = new BasicMarker(13L, new Point2D.Double(-3.029180, 34.989125),
-				"Aéroport international de Nador");
-		nador.setDraggable(false);
-		nador.setInfoWindowContent(null, createInfoWindow(nador.getTitle()));
+			hoceima = new BasicMarker(9L, new Point2D.Double(-3.839891,
+					35.179557), "Aéroport Idrissi Cherif");
+			hoceima.setDraggable(false);
+			hoceima.setInfoWindowContent(null,
+					createInfoWindow(hoceima.getTitle()));
 
-		essaouira = new BasicMarker(14L, new Point2D.Double(-9.683933,
-				31.396647), "Aéroport de Mogador");
-		essaouira.setDraggable(false);
-		essaouira.setInfoWindowContent(null,
-				createInfoWindow(essaouira.getTitle()));
+			errachidia = new BasicMarker(10L, new Point2D.Double(-4.399053,
+					31.947011), "Aéroport de Moulay Ali Cherif");
+			errachidia.setDraggable(false);
+			errachidia.setInfoWindowContent(null,
+					createInfoWindow(errachidia.getTitle()));
 
-		// add Markers to Map
-		googleMap.addMarker(casablanca);
-		googleMap.addMarker(rabat);
-		googleMap.addMarker(guelmimAirBase);
-		googleMap.addMarker(agadir);
-		googleMap.addMarker(oujda);
-		googleMap.addMarker(fes);
-		googleMap.addMarker(marrakech);
-		googleMap.addMarker(tanger);
-		googleMap.addMarker(hoceima);
-		googleMap.addMarker(errachidia);
-		googleMap.addMarker(tetouan);
-		googleMap.addMarker(zate);
-		googleMap.addMarker(nador);
-		googleMap.addMarker(essaouira);
+			tetouan = new BasicMarker(11L, new Point2D.Double(-5.316667,
+					35.583332), "Aéroport de Sania Ramel");
+			tetouan.setDraggable(false);
+			tetouan.setInfoWindowContent(null,
+					createInfoWindow(tetouan.getTitle()));
 
-		// specifying some controls
-		googleMap.addControl(MapControl.MenuMapTypeControl);
-		googleMap.addControl(MapControl.LargeMapControl);
-		googleMap.addControl(MapControl.OverviewMapControl);
-		googleMap.addControl(MapControl.ScaleControl);
+			zate = new BasicMarker(12L,
+					new Point2D.Double(-6.909488, 30.939036),
+					"Aéroport Ouarzazate");
+			zate.setDraggable(false);
+			zate.setInfoWindowContent(null, createInfoWindow(zate.getTitle()));
 
+			nador = new BasicMarker(13L, new Point2D.Double(-3.029180,
+					34.989125), "Aéroport international de Nador");
+			nador.setDraggable(false);
+			nador.setInfoWindowContent(null, createInfoWindow(nador.getTitle()));
+
+			essaouira = new BasicMarker(14L, new Point2D.Double(-9.683933,
+					31.396647), "Aéroport de Mogador");
+			essaouira.setDraggable(false);
+			essaouira.setInfoWindowContent(null,
+					createInfoWindow(essaouira.getTitle()));
+
+			// add Markers to Map
+			googleMap.addMarker(casablanca);
+			googleMap.addMarker(rabat);
+			googleMap.addMarker(guelmimAirBase);
+			googleMap.addMarker(agadir);
+			googleMap.addMarker(oujda);
+			googleMap.addMarker(fes);
+			googleMap.addMarker(marrakech);
+			googleMap.addMarker(tanger);
+			googleMap.addMarker(hoceima);
+			googleMap.addMarker(errachidia);
+			googleMap.addMarker(tetouan);
+			googleMap.addMarker(zate);
+			googleMap.addMarker(nador);
+			googleMap.addMarker(essaouira);
+
+			// specifying some controls
+			googleMap.addControl(MapControl.MenuMapTypeControl);
+			googleMap.addControl(MapControl.LargeMapControl);
+			googleMap.addControl(MapControl.OverviewMapControl);
+			googleMap.addControl(MapControl.ScaleControl);
+
+		}
 		return googleMap;
 	}
 
@@ -1183,9 +1223,16 @@ public class TableauBord extends VerticalLayout {
 					ResultSet rs = ps.executeQuery();
 					while (rs.next()) {
 						TimeSeries serie = new TimeSeries(st);
-						serie.add(
-								new Month(rs.getInt("mois"), year.intValue()),
-								rs.getInt("num") / s.numberOfPassengers(st));
+						try {
+							serie.add(
+									new Month(rs.getInt("mois"), year
+											.intValue()),
+									rs.getInt("num") / s.numberOfPassengers(st));
+						} catch (Exception ex) {
+							__app.getMainWindow().showNotification(
+									"Notification", "No Data",
+									Window.Notification.TYPE_TRAY_NOTIFICATION);
+						}
 						dataset.addSeries(serie);
 					}
 					ps.close();
@@ -1232,9 +1279,16 @@ public class TableauBord extends VerticalLayout {
 					ResultSet rs = ps.executeQuery();
 					while (rs.next()) {
 						TimeSeries serie = new TimeSeries(st);
-						serie.add(
-								new Month(rs.getInt("mois"), year.intValue()),
-								rs.getInt("num") / s.numberOfPassengers(st));
+						try {
+							serie.add(
+									new Month(rs.getInt("mois"), year
+											.intValue()),
+									rs.getInt("num") / s.numberOfPassengers(st));
+						} catch (Exception ex) {
+							__app.getMainWindow().showNotification(
+									"Notification", "No data",
+									Window.Notification.TYPE_TRAY_NOTIFICATION);
+						}
 						dataset.addSeries(serie);
 					}
 				} catch (SQLException e) {

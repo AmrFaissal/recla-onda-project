@@ -83,10 +83,11 @@ public class TableauActions extends VerticalLayout{
 				if (actionsModel.listOfActions(String.valueOf(airports.getValue())).size() != 0) {
 					
 					panel.setCaption("Tabeau Actions Entreprises");
-					table.setWidth("100%");
-					table.setSelectable(true);
-					table.setWriteThrough(true);
+					
 					table.setImmediate(true);
+					table.setWidth("100%");
+					//clearing the table
+					table.removeAllItems();
 					
 					//----------------------------------------
 					table.addContainerProperty("service", String.class	, null);
@@ -119,6 +120,8 @@ public class TableauActions extends VerticalLayout{
 					}
 					
 					//------------------------------------------
+					table.setSelectable(true);
+					table.setWriteThrough(true);
 					table.setPageLength(0);
 					table.setFooterVisible(true);
 					table.setVisible(true);

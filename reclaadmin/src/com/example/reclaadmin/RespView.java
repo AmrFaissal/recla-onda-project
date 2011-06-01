@@ -2,6 +2,9 @@ package com.example.reclaadmin;
 
 import java.net.UnknownHostException;
 
+import com.googlecode.mcvaadin.McEvent;
+import com.googlecode.mcvaadin.McListener;
+import com.googlecode.mcvaadin.helpers.UserMessages;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.Layout;
@@ -71,12 +74,26 @@ public class RespView extends VerticalLayout {
 	private Command _logout = new Command() {
 		@Override
 		public void menuSelected(MenuItem selectedItem) {
-			try {
-				__app.getViewManager().switchScreen(LoginScreen.class.getName(), new LoginScreen(__app));
-			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			// custom user message__confirmation dialog
+			UserMessages um = new UserMessages(__app.getMainWindow());
+			um.confirm("Confirmation",
+					"Vous voulez vraiment quitter la session ?", "Oui", "Non",
+					new McListener() {
+
+						@Override
+						public void exec(McEvent e) throws Exception {
+							// message confirmed
+							if (e.isConfirmed()) {
+								try {
+									__app.getViewManager().switchScreen(
+											LoginScreen.class.getName(),
+											new LoginScreen(__app));
+								} catch (UnknownHostException ex) {
+									ex.printStackTrace();
+								}
+							}
+						}
+					});
 		}
 	};
 
