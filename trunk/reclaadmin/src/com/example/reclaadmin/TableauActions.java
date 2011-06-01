@@ -86,7 +86,7 @@ public class TableauActions extends VerticalLayout{
 					
 					table.setImmediate(true);
 					table.setWidth("100%");
-					//clearing the table
+					//clearing the table 
 					table.removeAllItems();
 					
 					//----------------------------------------
@@ -99,7 +99,7 @@ public class TableauActions extends VerticalLayout{
 					
 					// getting a connection
 					Connection c = DBConnexion.getConnection();
-					String SQLquery = "SELECT m.`service`, m.`theme`,m.`observations`, m.`action`, m.`validation` FROM myActions m WHERE validation='EN COURS' AND idAeroport=? GROUP BY theme";
+					String SQLquery = "SELECT m.`service`, m.`theme`,m.`observations`, m.`action`, m.`validation` FROM myActions m WHERE validation='EN COURS' AND idAeroport=?";
 
 					try {
 						// creating the statement
