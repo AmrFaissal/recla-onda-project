@@ -1,0 +1,1 @@
+Cette application distribuée (Version Alpha), développée autour de GWT(Google Web Toolkit), aide à gérer les réclamations au sein des aéroports du Maroc.
